@@ -6,6 +6,7 @@
 $pdf_mode = 5;
 # 用 latex 模式编译时，使用 dvipdfmx 而非默认的 dvipdf。
 $dvipdf = "dvipdfmx %O -o %D %S";
+$xdvipdfmx="xdvipdfmx -E -o %D %O %S";
 # 此选项相关说明见 texdoc latexmk。
 $bibtex_use = 1.5;
 $biber = "biber -l zh__pinyin --output-safechars %O %S";

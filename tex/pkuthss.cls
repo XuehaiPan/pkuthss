@@ -3,6 +3,7 @@
 % Copyright (c) 2008-2009 solvethis
 % Copyright (c) 2010-2021 Casper Ti. Vector
 % Copyright (c) 2021 Kurapica
+% Copyright (c) 2021 iofu728
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3 of this license or (at
@@ -26,21 +27,112 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{pkuthss}
 	[2021/03/29 v1.9.0 Peking University dissertation document class]
-
+\def\pkuthss{pkuthss}
+\def\iofupkuthss{iofu728/pkuthss}
+\def\iofuversion{v1.0.0}
+\def\iofubaseversion{v1.9.0}
+\newcommand\thss@error[1]{%
+  \ClassError{pkuthss}{#1}{}%
+}
+\newcommand\thss@warning[1]{%
+  \ClassWarning{pkuthss}{#1}{}%
+}
+\RequirePackage{iftex}
+\ifXeTeX\else
+    \thss@error{%
+      The Overleaf pkuthss class requires Xe\TeX{}.\\\\
+      You must change your typesetting engine to, e.g.,
+      "xelatex" instead of "latex", "lualatex" or "pdflatex".
+    }
+\fi
+\RequirePackage{kvdefinekeys}
+\RequirePackage{kvsetkeys}
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{
+  family=thss,
+  prefix=thss@opt@,
+  setkeys=\kvsetkeys}
+\newcommand\thss@setup[1]{%
+  \kvsetkeys{thss}{#1}%
+}
+\newcommand\thss@define@key[1]{%
+  \kvsetkeys{thss@key}{#1}%
+}
+\kv@set@family@handler{thss@key}{%
+  \@namedef{thss@#1@@name}{#1}%
+  \def\thss@@default{}%
+  \def\thss@@choices{}%
+  \kv@define@key{thss@value}{name}{%
+    \@namedef{thss@#1@@name}{##1}%
+  }%
+  \@namedef{thss@#1@@check}{}%
+  \@namedef{thss@#1@@code}{}%
+  \kv@define@key{thss@value}{choices}{%
+    \def\thss@@choices{##1}%
+    \@namedef{thss@#1@@reset}{}%
+    \@namedef{thss@#1@@check}{%
+      \@ifundefined{%
+        ifthss@\@nameuse{thss@#1@@name}@\@nameuse{thss@\@nameuse{thss@#1@@name}}%
+      }{%
+        \thss@error{Invalid value "#1 = \@nameuse{thss@\@nameuse{thss@#1@@name}}"}%
+      }%
+      \@nameuse{thss@#1@@reset}%
+      \@nameuse{thss@\@nameuse{thss@#1@@name}@\@nameuse{thss@\@nameuse{thss@#1@@name}}true}%
+    }%
+  }%
+  \kv@define@key{thss@value}{default}{%
+    \def\thss@@default{##1}%
+  }%
+  \kvsetkeys{thss@value}{#2}%
+  \@namedef{thss@\@nameuse{thss@#1@@name}}{}%
+  \kv@set@family@handler{thss@choice}{%
+    \ifx\thss@@default\@empty
+      \def\thss@@default{##1}%
+    \fi
+    \expandafter\newif\csname ifthss@\@nameuse{thss@#1@@name}@##1\endcsname
+    \expandafter\g@addto@macro\csname thss@#1@@reset\endcsname{%
+      \@nameuse{thss@\@nameuse{thss@#1@@name}@##1false}%
+    }%
+  }%
+  \kvsetkeys@expandafter{thss@choice}{\thss@@choices}%
+  \expandafter\let\csname thss@\@nameuse{thss@#1@@name}\endcsname\thss@@default
+  \expandafter\ifx\csname thss@\@nameuse{thss@#1@@name}\endcsname\@empty\else
+    \@nameuse{thss@#1@@check}%
+  \fi
+  \kv@define@key{thss}{#1}{%
+    \@namedef{thss@\@nameuse{thss@#1@@name}}{##1}%
+    \@nameuse{thss@#1@@check}%
+    \@nameuse{thss@#1@@code}%
+  }%
+}
+\thss@define@key{
+  fontset = {
+    choices = {
+      auto,
+      windows,
+      windows@overleaf,
+      mac,
+      ubuntu,
+      fandol,
+      none,
+    },
+    default = auto,
+  },
+  encoding = {
+    choices = {
+      UTF8,
+      GBK,
+    },
+    default = UTF8,
+  },
+}
 % eg. `\thss@int@boolopt{spacing}{true}' will expand to:
 %   \newif\ifthss@opt@spacing \thss@opt@spacingtrue
 %   \DeclareOption{spacing}{\thss@opt@spacingtrue}
 %   \DeclareOption{nospacing}{\thss@opt@spacingfalse}
 \def\thss@int@boolopt#1#2{
-	\expandafter\newif\csname ifthss@opt@#1\endcsname
-	\@nameuse{thss@opt@#1#2}
-	\DeclareOption{#1}{\@nameuse{thss@opt@#1true}}
-	\DeclareOption{no#1}{\@nameuse{thss@opt@#1false}}
+	\DeclareBoolOption[#2]{#1}
 }
-% Process the encoding options.
-\newif\ifthss@opt@gbk \thss@opt@gbktrue
-\DeclareOption{GBK}{\thss@opt@gbktrue\PassOptionsToClass{GBK}{ctexbook}}
-\DeclareOption{UTF8}{\thss@opt@gbkfalse\PassOptionsToClass{UTF8}{ctexbook}}
 % Whether to enable `\Uppercase' (works problematically) in heading marks.
 \thss@int@boolopt{uppermark}{false}
 % Whether to modify fonts according to school regulation.
@@ -60,10 +152,12 @@
 \thss@int@boolopt{pdfprop}{true}
 % Whether to disable some infractions intended to make the style less ugly.
 \thss@int@boolopt{ugly}{false}
+% Whether in bind mode.
+\thss@int@boolopt{blind}{false}
 % Pass all other options to `ctexbook' document class.
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
+\DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{ctexbook}}
 % Process all class options now.
-\ProcessOptions\relax
+\ProcessKeyvalOptions*
 
 % Prevent fontspec (loaded by xeCJK) from interfering with newtxmath.
 \ifthss@opt@pkufont\PassOptionsToPackage{no-math}{fontspec}\fi
@@ -71,7 +165,7 @@
 % cf. <https://github.com/CTeX-org/ctex-kit/issues/454>.
 \ifthss@opt@pkufont\RequirePackage{amsmath}\fi
 % pkuthss is based on ctexbook; we use `xiao 4' as default font size.
-\LoadClass[zihao = -4]{ctexbook}[2014/03/06]
+\LoadClass[a4paper,\thss@encoding,zihao=-4,fontset=none]{ctexbook}[2014/03/06]
 % ctex 2.x no longer loads ifpdf and ifxetex by itself.
 \RequirePackage{ifpdf, ifxetex}
 % Provides support for `key = val' grammar.
@@ -84,9 +178,32 @@
 \RequirePackage{fancyhdr}
 % Provides `\uline' used in `\maketitle' (but do not mess with `\emph').
 \RequirePackage[normalem]{ulem}
+% Provides tableofcontents setting.
+\RequirePackage{titletoc}
+% Provides cover the scanned version pdf.
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{color}
+% Preset subcaption labelformat to simple.
+\RequirePackage[labelformat=simple]{subcaption}
+% Provides fontset.
+\RequirePackage{xeCJKfntef}
 % `\AtEndOfClass' used to avoid `PDF destination not defined' with setspace.
 \AtEndOfClass{\RequirePackage{hyperref}}
-\input{pkuthss.def}
+
+\ifthss@encoding@GBK
+	\input{pkuthss-gbk.def}
+	\ifxetex
+		% No support for XeLaTeX compilation in non-unicode encoding, i.e. GBK.
+		\ClassError{pkuthss}%
+			{XeLaTeX compilation is not supported without UTF-8}%
+			{%
+				XeLaTeX compilation without UTF-8 is very problematic.\MessageBreak
+				Therefore please use UTF-8 encoding for the LaTeX code.%
+			}
+	\fi
+\else
+	\input{pkuthss-utf8.def}
+\fi
 
 \ifthss@opt@pkufont
 	% Use Times New Roman / Arial according to school regulation.
@@ -99,6 +216,10 @@
 \fi
 
 \ifthss@opt@pkufoot
+    % Recounter for each page.
+    \RequirePackage{chngcntr}
+    \counterwithout{footnote}{chapter}
+    \counterwithin{footnote}{page}
 	% Handle the `Unparsed material' issue with latex/dvipdfmx compilation.
 	\unless\ifxetex\unless\ifpdf
 		\newcommand*{\pgfsysdriver}{pgfsys-dvipdfm.def}
@@ -114,8 +235,8 @@
 	}
 	% Use circled numbers as footnote symbols. Does not affect title page, but
 	% footnote is rarely used in dissertation covers ;)
-	\renewcommand*{\thefootnote}%
-		{\protect\thss@int@circled{\arabic{footnote}}}
+	\renewcommand*{\thefootnote}{\protect\thss@int@circled{\arabic{footnote}}}
+	\renewcommand*{\thempfootnote}{\protect\thss@int@circled{\arabic{mpfootnote}}}
 	% Provides utility to modify footnote spacing.
 	% Option used to make sure it does not render interleaf pages totally blank.
 	\RequirePackage[cleardoublepage = current]{scrextend}
@@ -137,7 +258,7 @@
 	% provides functions similar to `subfigure'/`subfig' but does not clash with
 	% `tocloft'; it clashes with `subfigure'/`subfig', but the error message will
 	% say they cannot be used simultaneously.
-	\RequirePackage{caption, subcaption}
+	\RequirePackage{caption}
 	\ifthss@opt@ugly
 		\DeclareCaptionFont{capfsize}{\fontsize{11bp}{13.2bp}}
 	\else
@@ -173,6 +294,20 @@
 	% Set up spacing for displayed formulae.
 	\setlength{\abovedisplayskip}{\belowdisplayshortskip}
 	\setlength{\belowdisplayskip}{\abovedisplayskip}
+    \hypersetup{
+        linktoc            = all,
+        bookmarksdepth     = 2,
+        bookmarksnumbered  = true,
+        bookmarksopen      = true,
+        bookmarksopenlevel = 1,
+        bookmarksdepth     = 3,
+        unicode            = true,
+        psdextra           = true,
+        breaklinks         = true,
+        plainpages         = false,
+        pdfdisplaydoctitle = true,
+        hidelinks,
+    }%
 
 	\ifthss@opt@pdftoc
 		% Add PDF bookmark for table of contents.
@@ -238,6 +373,7 @@
 \thss@int@infoitemb{mentorlines}
 \thss@int@infoitemb{cabstractname}
 \thss@int@infoitemb{eabstractname}
+\thss@int@infoitemb{denotationname}
 % Set up document information using the `key = value' grammar.
 \newcommand*{\pkuthssinfo}[1]{\setkeys{thss@info}{#1}}
 % Becomes \newline in the \makeblind scope.
@@ -269,19 +405,19 @@
 }
 \ctexset{
 	chapter = {nameformat = {}, titleformat = {}},
-	subsubsection = {format = {\zihao{-4}\bfseries}}
+	subsubsection = {format = {\zihao{-4}\heiti}}
 }
 \ifthss@opt@ugly
 	\ctexset{
-		chapter = {format = {\zihao{3}\bfseries\centering}},
-		section = {format = {\zihao{4}\bfseries}},
-		subsection = {format = {\fontsize{13bp}{15.6bp}\selectfont\bfseries}}
+		chapter = {format = {\zihao{3}\heiti\centering}},
+		section = {format = {\zihao{4}\heiti}},
+		subsection = {format = {\fontsize{13bp}{15.6bp}\selectfont\heiti}}
 	}
 \else
 	\ctexset{
-		chapter = {format = {\zihao{-2}\bfseries\centering}},
-		section = {format = {\zihao{-3}\bfseries}},
-		subsection = {format = {\zihao{4}\bfseries}}
+		chapter = {format = {\zihao{-2}\heiti\centering}},
+		section = {format = {\zihao{-3}\heiti}},
+		subsection = {format = {\zihao{4}\heiti}}
 	}
 \fi
 
@@ -342,7 +478,7 @@
 }
 
 % Set up format of the title page (cover).
-\renewcommand{\maketitle}{%
+\newcommand{\maketitle@normal}{%
 	\thss@int@pdfmark{\titlepagename}{titlepage}
 	% Make the title page centered.
 	\begin{titlepage}\centering
@@ -355,14 +491,13 @@
 				\zihao{1}\includegraphics[height = 2.4em]{pkulogo}\hspace{0.4em}%
 				\raisebox{0.4em}{\includegraphics[height = 1.6em]{pkuword}}\\[0.8em]
 			\fi%
-			{\bfseries\ifx\thesiscover\empty{\cthesisname}\else{\thesiscover}\fi}%
+			{\heiti\ifx\thesiscover\empty{\cthesisname}\else{\thesiscover}\fi}%
 		}
 		\vfill
 		% Title of the thesis.
 		{%
-			\ifthss@opt@ugly\zihao{-1}\else\zihao{2}\fi%
-			\linespread{1.6}\selectfont{\label@ctitle}%
-			\thss@int@fillinblank{2}{0.64\textwidth}{\textbf{\@ctitle}}%
+			\zihao{2}\linespread{1.6}\selectfont{\label@ctitle}%
+			\thss@int@fillinblank{2}{0.64\textwidth}{\heiti{\zihao{1}\@ctitle}}%
 		}
 		\vfill
 		% Information about the author.
@@ -371,19 +506,18 @@
 			\zihao{3}\linespread{1.75}\selectfont
 			\def\thss@tmp@len{0.56\textwidth}
 			\begin{tabular}{l@{\extracolsep{0.2em}}c}
-				{\bfseries\label@cauthor}		&
+				{\heiti{\zihao{-3}\label@cauthor}}		&
 				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cauthor}		\\
-				{\bfseries\label@studentid}	&
+				{\heiti{\zihao{-3}\label@studentid}}	&
 				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}	\\
-				{\bfseries\label@school}		&
+				{\heiti{\zihao{-3}\label@school}}		&
 				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}		\\
-				{\bfseries\label@cmajor}		&
+				{\heiti{\zihao{-3}\label@cmajor}}		&
 				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cmajor}		\\
-				{\bfseries\label@direction}	&
+				{\heiti{\zihao{-3}\label@direction}}	&
 				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
-				{\bfseries\label@cmentor}		&
-				\thss@int@fillinblank{\mentorlines}%
-					{\thss@tmp@len}{\fangsong\@cmentor}	\\
+				{\heiti{\zihao{-3}\label@cmentor}}		&
+				\thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@cmentor}		\\
 			\end{tabular}%
 		}
 		\vfill
@@ -412,35 +546,241 @@
 	\end{titlepage}%
 }
 
+% Unified Set up format of the cover two mode.
+\renewcommand{\maketitle}{%
+  \ifthss@opt@blind \makeblind
+  \else\maketitle@normal
+  \fi
+}
+
 % Typeset the Chinese abstract.
 \newenvironment{cabstract}{%
 	\thss@int@pdfmark{\cabstractname}{cabstract}
 	\chapter*{\cabstractname}\markboth{\cabstractname}{}%
 }{% Keywords at the bottom of the page.
-	\vfill\noindent\textbf{\label@ckeywords}{\@ckeywords}%
+	\vfill\noindent\label@ckeywords{\@ckeywords}%
 }
 
-% Typeset the English abstract.
+% Typeset the English abstract & double-blind review.
 \newenvironment{eabstract}{%
 	\thss@int@pdfmark{\eabstractname}{eabstract}
 	\chapter*{\sffamily\@etitle}\markboth{\eabstractname}{}
-	\begin{center}
-		{\@eauthor} ({\@emajor})\\
-		{\label@ementor}{\@ementor}\\[2em]
-		\textbf{\sffamily\eabstractname}
-	\end{center}\par%
+  \ifthss@opt@blind
+    \begin{center}\textbf{\sffamily\eabstractname}\end{center}\par%
+  \else
+    \begin{center}
+	  	{\@eauthor} ({\@emajor})\\
+	  	{\label@ementor}{\@ementor}\\[2em]
+		  \textbf{\sffamily\eabstractname}
+	  \end{center}
+  \fi\par%
 }{% Keywords at the bottom of the page.
-	\vfill\noindent\textbf{\label@ekeywords}{\@ekeywords}%
+	\vfill\noindent\label@ekeywords{\@ekeywords}%
 }
 
-% Typeset the English abstract for double-blind review.
-\newenvironment{beabstract}{%
-	\thss@int@pdfmark{\eabstractname}{eabstract}
-	\chapter*{\sffamily\@etitle}\markboth{\eabstractname}{}
-	\begin{center}\textbf{\sffamily\eabstractname}\end{center}\par%
-}{% Keywords at the bottom of the page.
-	\vfill\noindent\textbf{\label@ekeywords}{\@ekeywords}%
+
+% Typeset the tableofcontents.
+\renewcommand*{\tableofcontents}{%
+    \chapter*{\contentsname}%
+    \@mkboth{\MakeUppercase\contentsname}%
+            {\MakeUppercase\contentsname}%
+    \@starttoc{toc}%
 }
+\newcommand\thss@leaders{\titlerule*[4.4bp]{.}}
+\newcommand\thss@set@toc@format{%
+  \contentsmargin{\z@}%
+  \titlecontents{chapter}
+    [\z@]{\addvspace{6bp}\zihao{-4}\heiti}
+    {\contentspush{\thecontentslabel\quad}}{}
+    {\thss@leaders\thecontentspage}%
+  \titlecontents{section}
+    [1em]{}
+    {\contentspush{\thecontentslabel\quad}}{}
+    {\thss@leaders\thecontentspage}%
+  \titlecontents{subsection}
+    [2em]{}
+    {\contentspush{\thecontentslabel\quad}}{}
+    {\thss@leaders\thecontentspage}%
+}
+\thss@set@toc@format
+
+% Subfigure reference format.
+\renewcommand\thesubfigure{(\alph{subfigure})}
+
+% Typeset the item of denotation.
+\newlist{thss@denotation}{description}{1}
+\setlist[thss@denotation]{%
+  nosep,
+  font=\normalfont,
+  align=left,
+  leftmargin=!, % sum of the following 3 lengths
+  labelindent=0pt,
+  labelwidth=5.5cm,
+  labelsep*=0.5cm,
+  itemindent=0pt,
+}
+
+% Typeset the denotation.
+\newenvironment{denotation}[1][5.5cm]{%
+  \thss@int@pdfmark{\denotationname}{denotation}
+  \chapter*{\denotationname}\markboth{\denotationname}{}%
+  \vskip-30bp\zihao{-4}\begin{thss@denotation}[labelwidth=#1]
+}{%
+  \end{thss@denotation}
+}
+
+% Auto mode fontset.
+\ifthss@fontset@auto
+  \IfFontExistsTF{simsun.ttf}{
+    \thss@setup{fontset = windows}
+  }{
+    \IfFileExists{/System/Library/Fonts/Menlo.ttc}{
+      \thss@setup{fontset = mac}
+    }{
+      \thss@setup{fontset = fandol}
+    }
+  }
+\fi
+
+\newcommand\thss@set@cjk@font@windows{%
+  \xeCJKsetup{EmboldenFactor=3}%
+  \setCJKmainfont{SimSun}[
+    AutoFakeBold = true,
+    ItalicFont   = KaiTi,
+  ]%
+  \setCJKsansfont{SimHei}[AutoFakeBold]%
+  \setCJKmonofont{FangSong}%
+  \setCJKfamilyfont{zhsong}{SimSun}[AutoFakeBold]%
+  \setCJKfamilyfont{zhhei}{SimHei}[AutoFakeBold]%
+  \setCJKfamilyfont{zhkai}{KaiTi}%
+  \setCJKfamilyfont{zhfs}{FangSong}%
+}
+\newcommand\thss@set@cjk@font@windows@overleaf{%
+  \xeCJKsetup{EmboldenFactor=3}%
+  \setCJKmainfont{simsun.ttf}[
+    AutoFakeBold = true,
+    ItalicFont   = simkai.ttf,
+  ]%
+  \setCJKsansfont{simhei.ttf}[AutoFakeBold]%
+  \setCJKmonofont{simfang.ttf}%
+  \setCJKfamilyfont{zhsong}{simsun.ttf}[AutoFakeBold]%
+  \setCJKfamilyfont{zhhei}{simhei.ttf}[AutoFakeBold]%
+  \setCJKfamilyfont{zhkai}{simkai.ttf}%
+  \setCJKfamilyfont{zhfs}{simfang.ttf}%
+}
+\newcommand\thss@set@cjk@font@mac{%
+  \defaultCJKfontfeatures{}%
+  \setCJKmainfont{Songti SC}[
+    UprightFont    = * Light,
+    BoldFont       = * Bold,
+    ItalicFont     = Kaiti SC Regular,
+    BoldItalicFont = Kaiti SC Bold,
+  ]%
+  \setCJKsansfont{Heiti SC}[
+    UprightFont    = * Light,
+    BoldFont       = * Medium,
+  ]%
+  \setCJKmonofont{STFangsong}
+  \setCJKfamilyfont{zhsong}{Songti SC}[
+    UprightFont    = * Light,
+    BoldFont       = * Bold,
+  ]%
+  \setCJKfamilyfont{zhhei}{Heiti SC}[
+    UprightFont    = * Light,
+    BoldFont       = * Medium,
+  ]%
+  \setCJKfamilyfont{zhfs}{STFangsong}%
+  \setCJKfamilyfont{zhkai}{Kaiti SC}[
+    UprightFont    = * Regular,
+    BoldFont       = * Bold,
+  ]%
+  \setCJKfamilyfont{zhli}{Baoli SC}%
+  \setCJKfamilyfont{zhyuan}{Yuanyi SC}[
+    UprightFont    = * Light,
+    BoldFont       = * Bold,
+  ]%
+}
+\newcommand\thss@set@cjk@font@ubuntu{%
+  \defaultCJKfontfeatures{}%
+  \setCJKmainfont{Noto Serif CJK SC}[
+    UprightFont    = * Light,
+    BoldFont       = * Bold,
+    ItalicFont     = FandolKai-Regular,
+    ItalicFeatures = {Extension = .otf},
+    Script         = CJK,
+  ]%
+  \setCJKsansfont{Noto Sans CJK SC}[
+    BoldFont       = * Medium,
+    Script         = CJK,
+  ]%
+  \setCJKmonofont{FandolFang}
+  \setCJKfamilyfont{zhsong}{Noto Serif CJK SC}[
+    UprightFont    = * Light,
+    UprightFont    = * Bold,
+    Script         = CJK,
+  ]%
+  \setCJKfamilyfont{zhhei}{Noto Sans CJK SC}[
+    BoldFont       = * Medium,
+    Script         = CJK,
+  ]%
+  \setCJKfamilyfont{zhfs}{FandolFang}[
+    Extension      = .otf,
+    UprightFont    = *-Regular,
+  ]%
+  \setCJKfamilyfont{zhkai}{FandolKai}[
+    Extension      = .otf,
+    UprightFont    = *-Regular,
+  ]%
+}
+\newcommand\thss@set@cjk@font@fandol{%
+  \defaultCJKfontfeatures{}%
+  \setCJKmainfont{FandolSong}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+    BoldFont    = *-Bold,
+    ItalicFont  = FandolKai-Regular,
+    ItalicFeatures = {Extension = .otf},
+  ]%
+  \setCJKsansfont{FandolHei}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+    BoldFont    = *-Bold,
+  ]%
+  \setCJKmonofont{FandolFang}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+  ]%
+  \setCJKfamilyfont{zhsong}{FandolSong}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+    BoldFont    = *-Bold,
+  ]%
+  \setCJKfamilyfont{zhhei}{FandolHei}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+    BoldFont    = *-Bold,
+  ]%
+  \setCJKfamilyfont{zhfs}{FandolFang}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+  ]%
+  \setCJKfamilyfont{zhkai}{FandolKai}[
+    Extension   = .otf,
+    UprightFont = *-Regular,
+  ]%
+}
+\newcommand\thss@set@cjk@font{%
+  \ifthss@fontset@none\else
+    \@nameuse{thss@set@cjk@font@\thss@fontset}%
+    \providecommand\songti{\CJKfamily{zhsong}}
+    \providecommand\heiti{\CJKfamily{zhhei}}
+    \providecommand\fangsong{\CJKfamily{zhfs}}
+    \providecommand\kaishu{\CJKfamily{zhkai}}
+  \fi
+}
+\ifthss@opt@pkufoot
+    \thss@set@cjk@font
+\fi
 
 \endinput
 % vim:ft=tex:ts=2:sw=2
