@@ -67,8 +67,9 @@ See [CHANGELOG.md](CHANGELOG.md) for the detailed changes in each release.
 
 1. Q: 原创页使用这种方式生成得到的文件与 Mac 端字体不同。
 
-A: 门户生成的 PDF 文件将字体信息写入文件，导致在 Mac 端呈现字体效果不同(Mac 端显示的是华文字体，而 Windows 端显示的是中易字体)。
-请务必在 Windows 系统下进行打印，或者使用本包生成文件进行打印。
+A: 门户生成的 PDF 文件未嵌入字体，其指定字体为华文宋体(即 STSong)，由于各个 PDF 预览器和操作系统预设的字体不同，导致呈现效果差异较大
+(据不完全统计，Mac 端 PDF Expert 显示的是苹方简体，Chrome 显示的是方正粗宋，而 Acrobat 显示的是 AdobeSongStd，Windows 端 Edge 显示的是方正悠黑，在这之中 Acrobat 字体效果最为接近)。
+请务必使用 Acrobat 进行打印，或者使用本包生成文件进行打印。
 
 ## Lincense
 

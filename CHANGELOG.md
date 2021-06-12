@@ -4,6 +4,13 @@
 
 点击版本号即可在 GitHub 上查看相邻版本间的代码变动。
 
+## [Unreleased]
+
+### Fixed
+
+- 修复部分文档描述。
+- 重制原创页和版权页 PDF。
+
 ## [v1.0.0] - 2021-06-09
 
 ### Changed
@@ -24,4 +31,5 @@
 - 修正图书馆上传版本对隐藏超链接的要求。
 - 修正表格内引用序号，子图引用序号。
 
+[unreleased]: https://github.com/iofu728/pkuthss/compare/v1.0.0...HEAD
 [v1.0.0]: https://github.com/iofu728/pkuthss/releases/tag/v1.0.0
