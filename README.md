@@ -1,4 +1,4 @@
-**iofu728-pkuthss**: Modified version of `LaTeX` Peking University thesis template base on [CasperVector/pkuthss](https://github.com/CasperVector/pkuthss) v1.9.0
+**iofu728-pkuthss**: Modified version of `LaTeX` Peking University thesis template base on [CasperVector/pkuthss](https://github.com/CasperVector/pkuthss) v1.9.1
 
 [**Overleaf** Version](https://www.overleaf.com/latex/templates/2021-peking-university-master-thesis-template-iofu728-pkuthss/rwfvbkpzydpf) is public, welcome to use!
 
@@ -57,7 +57,7 @@ The following files have been changed
 - [x] Support Overleaf.
 - [x] Fix table of contents.
 - [x] Support insert pdf (copy and origin pages).
-- [x] Adaptive pkuthss v1.9.0.
+- [x] Adaptive pkuthss v1.9.1.
 
 ## Change Log
 
