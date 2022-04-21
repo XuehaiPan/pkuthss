@@ -632,6 +632,16 @@
 }
 \thss@set@toc@format
 
+% Typeset the table and figure contents.
+\titlecontents{table}
+  [\z@]{}
+  {\tablename~\thecontentslabel\quad}{}
+  {\thss@leaders\thecontentspage}
+\titlecontents{figure}
+  [\z@]{}
+  {\figurename~\thecontentslabel\quad}{}
+  {\thss@leaders\thecontentspage}
+
 % Subfigure reference format.
 \renewcommand\thesubfigure{(\alph{subfigure})}
 
