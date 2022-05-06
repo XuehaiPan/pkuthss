@@ -26,11 +26,11 @@
 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{pkuthss}
-	[2021/10/16 v1.9.1 Peking University dissertation document class]
+	[2022/05/05 v1.9.2 Peking University dissertation document class]
 \def\pkuthss{pkuthss}
 \def\iofupkuthss{iofu728/pkuthss}
 \def\iofuversion{v1.0.0}
-\def\iofubaseversion{v1.9.1}
+\def\iofubaseversion{v1.9.2}
 \newcommand\thss@error[1]{%
   \ClassError{pkuthss}{#1}{}%
 }
@@ -230,16 +230,16 @@
 			UprightFont = *-regular,
 			BoldFont = *-bold,
 			ItalicFont = *-italic,
-			BoldItalicFont = *-bolditalic
+			BoldItalicFont = *-bolditalic,
+      Scale = 0.95
 		]{texgyreheros}
 	\else
-		% `nofontspec' avoids errors like `The font "FangSong" cannot be found'.
 		% `defaultsups' prevents newtxtext from manipulating footnote marks.
-		\usepackage[nofontspec, defaultsups]{newtxtext}
-		\usepackage[varg]{newtxmath}
+		\RequirePackage{textcomp, mathptmx, latexsym}
+		\RequirePackage[scaled = 0.95]{helvet}
 	\fi
 \else
-	% Provides `\Box' for originauth.tex if XITSMath/newtx is absent.
+	% Provides `\Box' for originauth.tex if unicode-math is absent.
 	\RequirePackage{latexsym}
 \fi
 
