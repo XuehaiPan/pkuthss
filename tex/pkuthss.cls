@@ -255,9 +255,9 @@
 	% Circled text, cf. <https://tex.stackexchange.com/questions/7032/>.
 	\RequirePackage{tikz}
 	\newcommand*{\thss@int@circled}[1]{%
-		\scalebox{0.8}{\tikz[baseline = (char.base)]{
+		\scalebox{0.8}{\tikz[baseline = {([yshift = -0.1\ccwd] char.base)}]{
 			\node[
-				shape = circle, draw = black, minimum size = 1.25em, inner sep = 0pt
+				shape = circle, draw = black, minimum size = 1.25\ccwd, inner sep = 0pt
 			] (char) {#1};
 		}}%
 	}
@@ -266,10 +266,9 @@
 	\renewcommand*{\thefootnote}{\protect\thss@int@circled{\arabic{footnote}}}
 	\renewcommand*{\thempfootnote}{\protect\thss@int@circled{\arabic{mpfootnote}}}
 	% Provides utility to modify footnote spacing.
-	% Option used to make sure it does not render interleaf pages totally blank.
-	\RequirePackage[cleardoublepage = current]{scrextend}
-	% Set up footnote spacing: whole paragraph indent 2 ccwd, 0.5 ccwd after mark.
-	\deffootnote{2\ccwd}{0pt}{\thefootnotemark\hspace{0.5\ccwd}}
+	\RequirePackage{scrextend}
+	% Set up footnote spacing: whole paragraph indent 1.5 ccwd, 0.5 ccwd after mark.
+	\deffootnote{1.5\ccwd}{0pt}{\thefootnotemark\hspace{0.5\ccwd}}
 \fi
 
 \ifthss@opt@pkuspace
