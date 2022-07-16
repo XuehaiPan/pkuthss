@@ -29,7 +29,7 @@
 	[2022/05/05 v1.9.2 Peking University dissertation document class]
 \def\pkuthss{pkuthss}
 \def\iofupkuthss{iofu728/pkuthss}
-\def\iofuversion{v1.0.0}
+\def\iofuversion{v1.1.0}
 \def\iofubaseversion{v1.9.2}
 \newcommand\thss@error[1]{%
   \ClassError{pkuthss}{#1}{}%
@@ -125,6 +125,13 @@
     },
     default = UTF8,
   },
+  language = {
+    choices = {
+      chinese,
+      english,
+    },
+    default = chinese,
+  },  
 }
 
 % eg. `\thss@int@boolopt{spacing}{true}' will expand to:
@@ -203,6 +210,38 @@
 \else
 	\input{pkuthss-utf8.def}
 \fi
+
+% Set the name of chapter and section.
+\newcommand\thss@set@chapter@names{%
+  \ifthss@language@chinese
+    \def\listfigurename{插图索引}%
+    \def\listtablename{表格索引}%
+  \else
+    \ifthss@language@english
+      \def\bibname{References}%
+      \def\appendixname{Appendix}%
+      \def\contentsname{Contents}%
+      \def\listfigurename{List of Figures}%
+      \def\listtablename{List of Tables}%
+      \def\figurename{Figure}%
+      \def\tablename{Table}%
+      \def\indexname{Index}%
+      \ctexset{
+        part/name = {\partname\space},
+        part/number = {\thepart},
+        chapter = {
+          name = {\chaptername\space},
+          number = {\thechapter},
+          aftername = {\space},
+        },
+        section/aftername = {\space},
+        subsection/aftername = {\space},
+        autoindent = {0.8cm},
+      }
+    \fi
+  \fi
+}
+\thss@set@chapter@names
 
 \ifthss@opt@pkufont
 	% Use Times New Roman / Arial according to school regulation.
@@ -468,7 +507,7 @@
 	\fancyhf{}\renewcommand*{\headrulewidth}{0.75bp}
 	\fancyfoot[C]{\zihao{5}\normalfont{\thepage}}
 	\if@twoside
-		\fancyhead[CE]{\zihao{5}\normalfont{\cuniversity\cthesisname}}
+		\fancyhead[CE]{\zihao{5}\normalfont{\ifthss@language@chinese{\cuniversity\cthesisname}\else{\euniversity\ \ethesisname}\fi}}
 		\fancyhead[CO]{\zihao{5}\normalfont\thss@int@setcase{\leftmark}}
 	\else
 		\fancyhead[C]{\zihao{5}\normalfont\thss@int@setcase{\leftmark}}
@@ -518,13 +557,14 @@
 				\zihao{1}\includegraphics[height = 2.4em]{pkulogo}\hspace{0.4em}%
 				\raisebox{0.4em}{\includegraphics[height = 1.6em]{pkuword}}\\[0.8em]
 			\fi%
-			{\heiti\ifx\thesiscover\empty{\cthesisname}\else{\thesiscover}\fi}%
+			{\heiti\ifthss@language@chinese{\ifx\thesiscover\empty{\cthesisname}\else{\thesiscover}\fi}\else{\ethesisname}\fi}%
 		}
 		\vfill
+
 		% Title of the thesis.
 		{%
-			\zihao{2}\linespread{1.6}\selectfont{\label@ctitle}%
-			\thss@int@fillinblank{2}{0.64\textwidth}{\heiti{\zihao{1}\@ctitle}}%
+			\zihao{2}\linespread{1.6}\selectfont{\ifthss@language@chinese{\label@ctitle}\else{\label@etitle}\fi}%
+			\thss@int@fillinblank{2}{0.64\textwidth}{\heiti{\zihao{1}\ifthss@language@chinese{\@ctitle}\else{\@etitle}\fi}}%
 		}
 		\vfill
 		% Information about the author.
@@ -532,20 +572,39 @@
 			% Slightly adjust the line skip when using new font size.
 			\zihao{3}\linespread{1.75}\selectfont
 			\def\thss@tmp@len{0.56\textwidth}
-			\begin{tabular}{l@{\extracolsep{0.2em}}c}
-				{\heiti{\zihao{-3}\label@cauthor}}		&
-				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cauthor}		\\
-				{\heiti{\zihao{-3}\label@studentid}}	&
-				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}	\\
-				{\heiti{\zihao{-3}\label@school}}		&
-				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}		\\
-				{\heiti{\zihao{-3}\label@cmajor}}		&
-				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cmajor}		\\
-				{\heiti{\zihao{-3}\label@direction}}	&
-				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
-				{\heiti{\zihao{-3}\label@cmentor}}		&
-				\thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@cmentor}		\\
-			\end{tabular}%
+      \ifthss@language@chinese
+        \begin{tabular}{l@{\extracolsep{0.2em}}c}
+          {\heiti{\zihao{-3}\label@cauthor}}		&
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cauthor}		\\
+          {\heiti{\zihao{-3}\label@studentid}}	&
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}	\\
+          {\heiti{\zihao{-3}\label@school}}		&
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}		\\
+          {\heiti{\zihao{-3}\label@cmajor}}		&
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cmajor}		\\
+          {\heiti{\zihao{-3}\label@direction}}	&
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
+          {\heiti{\zihao{-3}\label@cmentor}}		&
+          \thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@cmentor}		\\
+        \end{tabular}%
+      \else
+        \ifthss@language@english
+          \begin{tabular}{c@{\extracolsep{0.2em}}c}
+            {\heiti{\zihao{-3}\label@eauthor}}		&
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@eauthor}		\\
+            {\heiti{\zihao{-3}\label@estudentid}}	&
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}	\\
+            {\heiti{\zihao{-3}\label@eschool}}		&
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}		\\
+            {\heiti{\zihao{-3}\label@emajor}}		&
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@emajor}		\\
+            {\heiti{\zihao{-3}\label@edirection}}	&
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
+            {\heiti{\zihao{-3}\label@ementor}}		&
+            \thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@ementor}		\\
+          \end{tabular}%
+        \fi
+      \fi
 		}
 		\vfill
 		% Date.
@@ -604,7 +663,6 @@
 }{% Keywords at the bottom of the page.
 	\vfill\noindent\label@ekeywords{\@ekeywords}%
 }
-
 
 % Typeset the tableofcontents.
 \renewcommand*{\tableofcontents}{%

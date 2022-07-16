@@ -23,6 +23,7 @@ To use pkuthss in the overleaf platform, and to support some customization requi
   - Supported scanned pdf insert(origin and copy pages);
   - Add fontset mode, change bfseries -> AutoFakeBold in windows;
   - Simplify user settings in blind mode;
+  - Support multi-lingual format(chinese and english);
 
 ## Quick Start
 
@@ -58,6 +59,7 @@ The following files have been changed
 - [x] Fix table of contents.
 - [x] Support insert pdf (copy and origin pages).
 - [x] Adaptive pkuthss v1.9.2.
+- [x] Support multi-lingual format.
 
 ## Change Log
 

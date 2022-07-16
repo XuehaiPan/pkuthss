@@ -1,15 +1,15 @@
 % Copyright (c) 2008-2009 solvethis
 % Copyright (c) 2010-2016,2018-2019,2021-2022 Casper Ti. Vector
 % Copyright (c) 2021 Kurapica
-% Copyright (c) 2021 iofu728
+% Copyright (c) 2022 iofu728
 % Local version.
 
 %*********************************************************************
 % iofu728-pkuthss: 北京大学研究生学位论文模板
-% 2021/06/09 v1.0.0
+% 2022/07/16 v1.1.0
 %
 % 重要提示：
-%   1. 当前overleaf版符合2021研究生学位论文要求，可通过图书馆审核
+%   1. 当前overleaf版符合2022研究生学位论文要求，可通过图书馆审核
 %   2. 当前版本基于pkuthss v1.9.2
 %   3. 请使用UTF-8编码，XeLaTeX方式编译
 %   4. 请仔细阅读用户文档
@@ -17,10 +17,11 @@
 %   6. 如有疑问github/iofu728/pkuthss上提问或联系作者@iofu728
 %*********************************************************************
 
-\documentclass[fontset=fandol,ugly]{pkuthss}
+\documentclass[fontset=fandol,ugly,language=chinese]{pkuthss}
   % 学位论文模式  ugly    (默认打开，请保留)
-  % 盲审模式      blind   (默认关闭)
-  % 字体库       fontset
+  % 盲审模式     blind   (默认关闭)
+  % 语言        language (默认chinese | english)
+  % 字体库      fontset
   %   auto | windows | windows@overleaf | mac | fandol | ubuntu | none
   % 除fandol，ubuntu外为商业字体，如需使用请遵循相应版权协议(需要已安装相应的字体)
   % fandol与windows效果相近，但字符库偏少，推荐使用(默认);
@@ -44,63 +45,66 @@
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 
 \pkuthssinfo{
-	cthesisname = {硕士学位论文},
- 	thesiscover = {硕士研究生学位论文},
-	ethesisname = {Master Thesis},
-	ctitle = {基于XXXX的XXXX系统设计与实现},
-	etitle = {Design and implementation of a XXXXX system based on XXXX},
-	cauthor = {扎克·施耐德}, eauthor = {Zack Snyder},
-	studentid = {180XXXXXXX},
-	% 具体时间以教务为准，初稿3月，送审4月，答辩5月，最终6月。
-	date = {\zhdigits{2021}\ \ 年\ \ \zhnumber{6}\ \ 月},
-	school = {XXXXXX学院},
-	cmajor = {XXXX}, emajor = {XXXX},
-	direction = {XXXX},
-	mentorlines = {2}, % 导师个数
-	% 副教授 A.P. 讲师 Lec.
-	cmentor = {XXX\ \ 教授\\YYY\ \ 教授}, ementor = {Prof.\ XXX and Prof.\ YYY},
-	ckeywords = {A，B，C，D},
-	ekeywords = {A,B,C,D},
-	% 盲审模式参数, 需在documentclass增加blind
-	blindid = {XXXXXXXXX}, discipline = {XXXX}
+    cthesisname = {硕士学位论文},
+    thesiscover = {硕士研究生学位论文},
+    ethesisname = {Master Thesis},
+    ctitle = {基于XXXX的XXXX系统设计与实现},
+    etitle = {Design and implementation of a XXXXX system based on XXXX},
+    cauthor = {扎克·施耐德}, eauthor = {Zack Snyder},
+    studentid = {180XXXXXXX},
+    % 具体时间以教务为准，初稿3月，送审4月，答辩5月，最终6月。
+    date = {\zhdigits{2022}\ \ 年\ \ \zhnumber{6}\ \ 月}, % June, 2022
+    school = {XXXXXX学院},
+    cmajor = {XXXX}, emajor = {XXXX},
+    direction = {XXXX},
+    mentorlines = {2}, % 导师个数
+    % 副教授 A.P. 讲师 Lec.
+    cmentor = {XXX\ \ 教授\\YYY\ \ 教授}, ementor = {Prof.\ XXX and Prof.\ YYY},
+    ckeywords = {A，B，C，D},
+    ekeywords = {A,B,C,D},
+    % 盲审模式参数, 需在documentclass增加blind
+    blindid = {XXXXXXXXX}, discipline = {XXXX}
 }
 \addbibresource{thesis.bib}
 
 
 \begin{document}
-	\frontmatter
-	\pagestyle{empty}
-	\maketitle
-	\cleardoublepage
-	% 需替换门户版权声明pdf
-	\include{chap/copy}
-
-	\cleardoublepage
-	\pagestyle{plain}
-	\setcounter{page}{0}
-	\pagenumbering{Roman}
-	\include{chap/abs}
-	\tableofcontents
-	% 如有需要使用主要符号对照表
-	\include{chap/deno}
-
-	\mainmatter
-	\include{chap/chap1}
-	\include{chap/chap2}
-	\include{chap/chap3}
-	\include{chap/chap4}
-	\include{chap/chap5}
-	\include{chap/chap6}
+    \frontmatter
+    \pagestyle{empty}
+    \maketitle
+    \cleardoublepage
+    % 需替换门户版权声明pdf
+    \include{chap/copy}
+    
+    \cleardoublepage
+    \pagestyle{plain}
+    \setcounter{page}{0}
+    \pagenumbering{Roman}
+    \include{chap/abs}
+    \tableofcontents
+    % 如有需要使用表格索引、插图索引
+    \listoftables
+    \listoffigures
+    % 如有需要使用主要符号对照表
+    \include{chap/deno}
+    
+    \mainmatter
+    \include{chap/chap1}
+    \include{chap/chap2}
+    \include{chap/chap3}
+    \include{chap/chap4}
+    \include{chap/chap5}
+    \include{chap/chap6}
     
     \appendix
     \printbibliography[heading = bibintoc]
     % 如有需要使用研究生成果页
     \include{chap/ach}
 
-	\backmatter
-	\include{chap/ack}
-	% 需替换门户原创页pdf/扫描pdf
-	\include{chap/origin}
+    \backmatter
+    \include{chap/ack}
+    % 需替换门户原创页pdf/扫描pdf
+    \include{chap/origin}
 
 \end{document}
 
