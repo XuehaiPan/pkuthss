@@ -14,6 +14,7 @@ To use pkuthss in the overleaf platform, and to support some customization requi
   - Fixed `KEY WORDS`, `Title` in the cover -> remove the setting of `bold`;
   - Fixed Font Size / Font in the cover, like title and keys;
   - Hind hreflink;
+  - Fixed the format of tables list and figures list;
 
 - Functional Part:
   - Support library inspection requirements;
