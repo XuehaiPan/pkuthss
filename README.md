@@ -1,6 +1,6 @@
 **iofu728-pkuthss**: Modified version of `LaTeX` Peking University thesis template base on [CasperVector/pkuthss](https://github.com/CasperVector/pkuthss) v1.9.2
 
-[**Overleaf** Version](https://www.overleaf.com/latex/templates/2021-peking-university-master-thesis-template-iofu728-pkuthss/rwfvbkpzydpf) is public, welcome to use!
+[**Overleaf** Version](https://www.overleaf.com/latex/templates/2022-peking-university-master-thesis-template-iofu728-pkuthss/rwfvbkpzydpf) is public, welcome to use!
 
 ## Overview
 

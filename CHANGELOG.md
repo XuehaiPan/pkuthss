@@ -6,10 +6,18 @@
 
 ## [Unreleased]
 
+## [v1.1.0] - 2022-07-16
+
+### Changed
+
+- 对齐 CasperVector/pkuthss v1.9.2;
+- 支持英文模式;
+
 ### Fixed
 
 - 修复部分文档描述。
 - 重制原创页和版权页 PDF。
+- 调整表格索引、插图索引格式
 
 ## [v1.0.0] - 2021-06-09
 
@@ -31,5 +39,6 @@
 - 修正图书馆上传版本对隐藏超链接的要求。
 - 修正表格内引用序号，子图引用序号。
 
-[unreleased]: https://github.com/iofu728/pkuthss/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/iofu728/pkuthss/compare/v1.1.0...HEAD
+[v1.1.0]: https://github.com/iofu728/pkuthss/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/iofu728/pkuthss/releases/tag/v1.0.0
