@@ -1,130 +1,111 @@
 % Copyright (c) 2008-2009 solvethis
 % Copyright (c) 2010-2016,2018-2019,2021-2022 Casper Ti. Vector
 % Copyright (c) 2021 Kurapica
-% Public domain.
+% Copyright (c) 2022 iofu728
+% Local version.
+
+%*********************************************************************
+% iofu728-pkuthss: 北京大学研究生学位论文模板
+% 2022/07/16 v1.1.0
 %
-% 使用前请先仔细阅读 pkuthss 和 biblatex-caspervector 的文档，
-% 特别是其中的 FAQ 部分和用红色强调的部分。
-% 两者可在终端/命令提示符中用
-%   texdoc pkuthss
-%   texdoc biblatex-caspervector
-% 调出。
+% 重要提示：
+%   1. 当前overleaf版符合2022研究生学位论文要求，可通过图书馆审核
+%   2. 当前版本基于pkuthss v1.9.2
+%   3. 请使用UTF-8编码，XeLaTeX方式编译
+%   4. 请仔细阅读用户文档
+%   5. 修改、使用、发布本文档类请务必遵循LaTeX Project Public License和知识共享4.0
+%   6. 如有疑问github/iofu728/pkuthss上提问或联系作者@iofu728
+%*********************************************************************
 
-% 如果格式审查提示字号不严格符合标准，可以在 [] 中加入“ugly”选项。
-\documentclass[UTF8]{pkuthss}
-% 如果的确须要使脚注按页编号的话，可以去掉后面 footmisc 包的注释。
-%\usepackage[perpage]{footmisc}
+\documentclass[fontset=fandol,ugly,language=chinese]{pkuthss}
+  % 学位论文模式  ugly    (默认打开，请保留)
+  % 盲审模式     blind   (默认关闭)
+  % 语言        language (默认chinese | english)
+  % 字体库      fontset
+  %   auto | windows | windows@overleaf | mac | fandol | ubuntu | none
+  % 除fandol，ubuntu外为商业字体，如需使用请遵循相应版权协议(需要已安装相应的字体)
+  % fandol与windows效果相近，但字符库偏少，推荐使用(默认);
+  % ubuntu字体效果偏差较大; 设为none时需自行配置字体集;
+  % fandol与windows效果相近，但字符库偏少，推荐使用(默认);
+  % ubuntu字体效果偏差较大；设为none时需自行配置字体集；
 
-% 使用 biblatex 排版参考文献，并规定其格式（详见 biblatex-caspervector 的文档）。
-% 这里按照西文文献在前，中文文献在后排序（“sorting = ecnyt”）；
-% 若须按照中文文献在前，西文文献在后排序，请设置“sorting = cenyt”；
-% 若须按照引用顺序排序，请设置“sorting = none”。
-% 若须在排序中实现更复杂的需求，请参考 biblatex-caspervector 的文档。
-% biblatex-caspervector 也有一个“ugly”选项，使其更像国标格式；此外也可考虑
-% 改用 style = gb7714-2015 并去掉之后两选项，详见 biblatex-gb7714-2015 的文档。
-\usepackage[backend = biber, style = caspervector, utf8, sorting = ecnyt]{biblatex}
+\usepackage[backend=biber,style=gb7714-2015]{biblatex}
+  % 参考文献遵循GB/T 7714-2015标准，使用biblatex-gb7714-2015 宏包。
+  % 此处使用顺序编码制，如使用著者-出版年制则更改为b7714-2015ay。
 
-% 对于 linespread 值的计算过程有兴趣的同学可以参考 pkuthss.cls。
-\renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
-% 按学校要求设定参考文献列表的段间距。
+% 示例文档用包和设定，该段均可移除.
+\usepackage{enumitem,fancyvrb}
+\usepackage{booktabs,multirow,longtable,makecell} % 表格相关
+\RecustomVerbatimEnvironment{Verbatim}{Verbatim}{frame = single, tabsize = 4, fontsize=\footnotesize}
+\renewcommand{\v}[1]{\boldsymbol{#1}}
+\newcommand\pkg[1]{\textsf{#1}}
+
+% 参考文献边距字体
 \setlength{\bibitemsep}{3bp}
+\renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 
-% 如是双盲版论文，将 \blindfalse 改为 \blindtrue。后面可用
-% \ifblind 根据是否双盲来条件地启用代码（参见本文件后面部分）。
-\newif\ifblind\blindfalse
-% 设定文档的基本信息。
 \pkuthssinfo{
-	cthesisname = {博士学位论文}, ethesisname = {Doctor Thesis},
-	thesiscover = {博士研究生学位论文},
-	% 长标题可用 \thssnl 强制换行，不能用“\\”（双盲版会出错）。
-	ctitle = {测试文档},
-	etitle = {Test Document},
-	cauthor = {某某}, eauthor = {Test}, date = {某年某月},
-	studentid = {0123456789}, school = {某某学院},
-	cmajor = {某某专业}, emajor = {Some Major},
-	direction = {某某方向}, mentorlines = {2},
-	cmentor = {某甲教授\\某乙教授},
-	ementor = {Prof.\ Somebody and Prof.\ Someone},
-	ckeywords = {其一，其二},
-	ekeywords = {First, Second},
-	% 以下两项无双盲评审需求的用户可保持原状。
-	% 注意 discipline/major 分别指一/二级学科。
-	blindid = {9876543210}, discipline = {某某学科}
+    cthesisname = {硕士学位论文},
+    thesiscover = {硕士研究生学位论文},
+    ethesisname = {Master Thesis},
+    ctitle = {基于XXXX的XXXX系统设计与实现},
+    etitle = {Design and implementation of a XXXXX system based on XXXX},
+    cauthor = {扎克·施耐德}, eauthor = {Zack Snyder},
+    studentid = {180XXXXXXX},
+    % 具体时间以教务为准，初稿3月，送审4月，答辩5月，最终6月。
+    date = {\zhdigits{2022}\ \ 年\ \ \zhnumber{6}\ \ 月}, % June, 2022
+    school = {XXXXXX学院},
+    cmajor = {XXXX}, emajor = {XXXX},
+    direction = {XXXX},
+    mentorlines = {2}, % 导师个数
+    % 副教授 A.P. 讲师 Lec.
+    cmentor = {XXX\ \ 教授\\YYY\ \ 教授}, ementor = {Prof.\ XXX and Prof.\ YYY},
+    ckeywords = {A，B，C，D},
+    ekeywords = {A,B,C,D},
+    % 盲审模式参数, 需在documentclass增加blind
+    blindid = {XXXXXXXXX}, discipline = {XXXX}
 }
-% 载入参考文献数据库（注意不要省略“.bib”）。
 \addbibresource{thesis.bib}
 
-% 普通用户可删除此段，并相应地删除 chap/*.tex 中的
-% “\pkuthssffaq % 中文测试文字。”一行。
-\usepackage{color}
-\def\pkuthssffaq{%
-	\emph{\textcolor{red}{pkuthss 文档模版最常见问题：}}
-
-	\texttt{\string\cite}、\texttt{\string\parencite} %
-	和 \texttt{\string\supercite} 三个命令分别产生%
-	未格式化的、带方括号的和上标且带方括号的引用标记：%
-	\cite{test-en}，\parencite{test-zh}、\supercite{test-en, test-zh}。
-
-	若格式审查时提示字号或其它格式细节问题，请启用 pkuthss 的 \texttt{ugly}
-	选项，同时可以考虑启用 biblatex-caspervector 的 \texttt{ugly} 选项
-	或者换用 biblatex-gb7714-2015，详见 \texttt{thesis.tex} 中相关注释。
-
-	生成的 PDF 文件中标记链接的彩色框不会出现在打印版论文中。
-	如仍须去掉，可在 \texttt{thesis.tex} 导言区加入
-	\texttt{\string\hypersetup\string{hidelinks\string}}。
-
-	若要避免章末空白页，请在调用 pkuthss 文档类时加入 \texttt{openany} 选项。
-
-	如果编译时不出参考文献，
-	请参考 \texttt{texdoc pkuthss}“问题及其解决”一章
-	“上游宏包可能引起的问题”一节中关于 biber 的说明。
-
-	因无法假定用户使用哪种方式排版表格，用户须自行保证表格字号符合学校规定。%
-}
 
 \begin{document}
-	% 以下为正文之前的部分，默认不进行章节编号。
-	\frontmatter
-	% 此后到下一 \pagestyle 命令之前不排版页眉或页脚。
-	\pagestyle{empty}
-	% 自动生成封面。
-	\ifblind\makeblind\else\maketitle\fi
-	% 版权声明。封面要求单面打印，故须新开右页。
-	\cleardoublepage
-	\include{chap/copy}
+    \frontmatter
+    \pagestyle{empty}
+    \maketitle
+    \cleardoublepage
+    % 需替换门户版权声明pdf
+    \include{chap/copy}
+    
+    \cleardoublepage
+    \pagestyle{plain}
+    \setcounter{page}{0}
+    \pagenumbering{Roman}
+    \include{chap/abs}
+    \tableofcontents
+    % 如有需要使用表格索引、插图索引
+    \listoftables
+    \listoffigures
+    % 如有需要使用主要符号对照表
+    \include{chap/deno}
+    
+    \mainmatter
+    \include{chap/chap1}
+    \include{chap/chap2}
+    \include{chap/chap3}
+    \include{chap/chap4}
+    \include{chap/chap5}
+    \include{chap/chap6}
+    
+    \appendix
+    \printbibliography[heading = bibintoc]
+    % 如有需要使用研究生成果页
+    \include{chap/ach}
 
-	% 此后到下一 \pagestyle 命令之前正常排版页眉和页脚。
-	\cleardoublepage
-	\pagestyle{plain}
-	% 重置页码计数器，用大写罗马数字排版此部分页码。
-	\setcounter{page}{0}
-	\pagenumbering{Roman}
-	% 中西文摘要。
-	\include{chap/abs}
-	% 自动生成目录。
-	\tableofcontents
+    \backmatter
+    \include{chap/ack}
+    % 需替换门户原创页pdf/扫描pdf
+    \include{chap/origin}
 
-	% 以下为正文部分，默认要进行章节编号。
-	\mainmatter
-	% 各章节。
-	\include{chap/chap1}
-	\include{chap/chap2}
-	\include{chap/chap3}
-
-	% 正文中的附录部分。
-	\appendix
-	% 排版参考文献列表。bibintoc 选项使“参考文献”出现在目录中；
-	% 如果同时要使参考文献列表参与章节编号，可将“bibintoc”改为“bibnumbered”。
-	\printbibliography[heading = bibintoc]
-	% 各附录。
-	\include{chap/encl1}
-
-	% 以下为正文之后的部分，默认不进行章节编号。
-	\backmatter
-	% 致谢。
-	\ifblind\else\include{chap/ack}\fi
-	% 原创性声明和使用授权说明。
-	\include{chap/origin}
 \end{document}
 
 % vim:ts=4:sw=4
