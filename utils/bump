@@ -15,5 +15,3 @@ revbump:
 	@echo '$@: remember to update the change log and copyright lines'
 	@echo '$@: remember to tag the commit and push tags'
 	@echo '$@: remember to add new download on project homepage'
-
-# vim:ts=4:sw=4

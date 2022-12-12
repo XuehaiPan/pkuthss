@@ -29,8 +29,8 @@
 
 \documentclass[UTF8]{pkuthss}
 \usepackage[
-	backend = biber, style = caspervector, utf8,
-	sorting = ecnyt, giveninits = true, sortgiveninits = true
+  backend = biber, style = caspervector, utf8,
+  sorting = ecnyt, giveninits = true, sortgiveninits = true
 ]{biblatex}
 \usepackage{iftex, fancyvrb, hologo}
 
@@ -44,62 +44,60 @@
 \newcommand{\myemph}[1]{\emph{\textcolor{red}{#1}}}
 \newcommand{\unemph}[1]{\textup{\textcolor{black}{#1}}}
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}%
-	{frame = single, tabsize = 4, formatcom = {\ifXeTeX\xeCJKVerbAddon\fi}}
+  {frame = single, tabsize = 4, formatcom = {\ifXeTeX\xeCJKVerbAddon\fi}}
 \RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}{
-	fontsize = {\small}, baselinestretch = 1,
-	tabsize = 4, formatcom = {\ifXeTeX\xeCJKVerbAddon\fi}
+  fontsize = {\small}, baselinestretch = 1,
+  tabsize = 4, formatcom = {\ifXeTeX\xeCJKVerbAddon\fi}
 }
 
 \newif\ifblind\blindfalse
 \newcommand*{\docversion}{v1.9.3}
 \pkuthssinfo{
-	cthesisname = {本科生毕业论文}, ethesisname = {Undergraduate Thesis},
-	ctitle = {北京大学学位论文模版{\thssnl}pkuthss \docversion},
-	etitle = {%
-		PKU dissertation document class%
-		\texorpdfstring{\thssnl}{: }pkuthss \docversion%
-	},
-	cauthor = {盖茨波·钛·维克托}, eauthor = {Casper Ti.\ Vector},
-	date = {\zhdigits{2022}年\zhnumber{10}月},
-	studentid = {00910???}, school = {化学与分子工程学院},
-	cmajor = {应用化学}, emajor = {Applied Chemistry},
-	direction = {据说 Casper 自己也不知道}, mentorlines = {2},
-	cmentor = {XX 教授\\YY 教授},
-	ementor = {Prof.\ XX and Prof.\ YY},
-	ckeywords = {\hologo{LaTeX}，排版，文档类，\CTeX{}},
-	ekeywords = {\hologo{LaTeX}, Typesetting, Document class, \CTeX{}},
-	blindid = {???01900}, discipline = {化学}
+  cthesisname = {本科生毕业论文}, ethesisname = {Undergraduate Thesis},
+  ctitle = {北京大学学位论文模版{\thssnl}pkuthss \docversion},
+  etitle = {%
+    PKU dissertation document class%
+    \texorpdfstring{\thssnl}{: }pkuthss \docversion%
+  },
+  cauthor = {盖茨波·钛·维克托}, eauthor = {Casper Ti.\ Vector},
+  date = {\zhdigits{2022}年\zhnumber{10}月},
+  studentid = {00910???}, school = {化学与分子工程学院},
+  cmajor = {应用化学}, emajor = {Applied Chemistry},
+  direction = {据说 Casper 自己也不知道}, mentorlines = {2},
+  cmentor = {XX 教授\\YY 教授},
+  ementor = {Prof.\ XX and Prof.\ YY},
+  ckeywords = {\hologo{LaTeX}，排版，文档类，\CTeX{}},
+  ekeywords = {\hologo{LaTeX}, Typesetting, Document class, \CTeX{}},
+  blindid = {???01900}, discipline = {化学}
 }
 \addbibresource{pkuthss.bib}
 
 \begin{document}
-	\frontmatter
-	\pagestyle{empty}
-	\ifblind\makeblind\else\maketitle\fi
-	\cleardoublepage
-	\include{chap/pkuthss-copy}
+  \frontmatter
+  \pagestyle{empty}
+  \ifblind\makeblind\else\maketitle\fi
+  \cleardoublepage
+  \include{chap/pkuthss-copy}
 
-	\cleardoublepage
-	\pagestyle{plain}
-	\setcounter{page}{0}
-	\pagenumbering{Roman}
-	\include{chap/pkuthss-abs}
-	\tableofcontents
+  \cleardoublepage
+  \pagestyle{plain}
+  \setcounter{page}{0}
+  \pagenumbering{Roman}
+  \include{chap/pkuthss-abs}
+  \tableofcontents
 
-	\mainmatter
-	\include{chap/pkuthss-intro}
-	\include{chap/pkuthss-chap1}
-	\include{chap/pkuthss-chap2}
-	\include{chap/pkuthss-chap3}
-	\include{chap/pkuthss-concl}
+  \mainmatter
+  \include{chap/pkuthss-intro}
+  \include{chap/pkuthss-chap1}
+  \include{chap/pkuthss-chap2}
+  \include{chap/pkuthss-chap3}
+  \include{chap/pkuthss-concl}
 
-	\appendix
-	\printbibliography[heading = bibintoc]
-	\include{chap/pkuthss-encl1}
+  \appendix
+  \printbibliography[heading = bibintoc]
+  \include{chap/pkuthss-encl1}
 
-	\backmatter
-	\ifblind\else\include{chap/pkuthss-ack}\fi
-	\include{chap/origin}
+  \backmatter
+  \ifblind\else\include{chap/pkuthss-ack}\fi
+  \include{chap/origin}
 \end{document}
-
-% vim:ts=4:sw=4

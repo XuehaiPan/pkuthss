@@ -15,5 +15,3 @@ all: $(PDFS)
 
 clean:
 	$(RM) $(PDFS)
-
-# vim:ts=4:sw=4

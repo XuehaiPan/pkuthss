@@ -25,8 +25,7 @@
 %   pkuword.eps
 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{pkuthss}
-	[2022/10/30 v1.9.3 Peking University dissertation document class]
+\ProvidesClass{pkuthss}[2022/10/30 v1.9.3 Peking University dissertation document class]
 \def\pkuthss{pkuthss}
 \def\iofupkuthss{iofu728/pkuthss}
 \def\iofuversion{v1.1.0}
@@ -39,11 +38,11 @@
 }
 \RequirePackage{iftex}
 \ifXeTeX\else
-    \thss@error{%
-      The Overleaf pkuthss class requires Xe\TeX{}.\\\\
-      You must change your typesetting engine to, e.g.,
-      "xelatex" instead of "latex", "lualatex" or "pdflatex".
-    }
+  \thss@error{%
+    The Overleaf pkuthss class requires Xe\TeX{}.\\\\
+    You must change your typesetting engine to, e.g.,
+    "xelatex" instead of "latex", "lualatex" or "pdflatex".
+  }
 \fi
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
@@ -139,7 +138,7 @@
 %   \DeclareOption{spacing}{\thss@opt@spacingtrue}
 %   \DeclareOption{nospacing}{\thss@opt@spacingfalse}
 \def\thss@int@boolopt#1#2{
-	\DeclareBoolOption[#2]{#1}
+  \DeclareBoolOption[#2]{#1}
 }
 % Whether to enable `\Uppercase' (works problematically) in heading marks.
 \thss@int@boolopt{uppermark}{false}
@@ -197,18 +196,18 @@
 \AtEndOfClass{\RequirePackage{hyperref}}
 
 \ifthss@encoding@GBK
-	\input{pkuthss-gbk.def}
-	\ifxetex
-		% No support for XeLaTeX compilation in non-unicode encoding, i.e. GBK.
-		\ClassError{pkuthss}%
-			{XeLaTeX compilation is not supported without UTF-8}%
-			{%
-				XeLaTeX compilation without UTF-8 is very problematic.\MessageBreak
-				Therefore please use UTF-8 encoding for the LaTeX code.%
-			}
-	\fi
+  \input{pkuthss-gbk.def}
+  \ifxetex
+    % No support for XeLaTeX compilation in non-unicode encoding, i.e. GBK.
+    \ClassError{pkuthss}%
+    {XeLaTeX compilation is not supported without UTF-8}%
+    {%
+      XeLaTeX compilation without UTF-8 is very problematic.\MessageBreak
+      Therefore please use UTF-8 encoding for the LaTeX code.%
+    }
+  \fi
 \else
-	\input{pkuthss-utf8.def}
+  \input{pkuthss-utf8.def}
 \fi
 
 % Set the name of chapter and section.
@@ -244,175 +243,178 @@
 \thss@set@chapter@names
 
 \ifthss@opt@pkufont
-	% Use Times New Roman / Arial according to school regulation.
-	\ifxetex
-		\RequirePackage{unicode-math}
-		\setmathfont[
-			Extension = .otf,
-			BoldFont = XITSMath-Bold
-		]{XITSMath-Regular}
-		\DeclareSymbolFont{CMlargesymbols}{OMX}{cmex}{m}{n}
-		\let\sumop\relax\let\prodop\relax
-		\DeclareMathSymbol{\sumop}{\mathop}{CMlargesymbols}{"50}
-		\DeclareMathSymbol{\prodop}{\mathop}{CMlargesymbols}{"51}
-		\renewcommand{\Box}{\mdlgwhtsquare}
+  % Use Times New Roman / Arial according to school regulation.
+  \ifxetex
+    \RequirePackage{unicode-math}
+    \setmathfont[
+      Extension = .otf,
+      BoldFont = XITSMath-Bold
+    ]{XITSMath-Regular}
+    \DeclareSymbolFont{CMlargesymbols}{OMX}{cmex}{m}{n}
+    \let\sumop\relax\let\prodop\relax
+    \DeclareMathSymbol{\sumop}{\mathop}{CMlargesymbols}{"50}
+    \DeclareMathSymbol{\prodop}{\mathop}{CMlargesymbols}{"51}
+    \renewcommand{\Box}{\mdlgwhtsquare}
 
-		\setmainfont[
-			Extension = .otf,
-			UprightFont = *-Regular,
-			BoldFont = *-Bold,
-			ItalicFont = *-Italic,
-			BoldItalicFont = *-BoldItalic
-		]{XITS}
-		\setsansfont[
-			Extension = .otf,
-			UprightFont = *-regular,
-			BoldFont = *-bold,
-			ItalicFont = *-italic,
-			BoldItalicFont = *-bolditalic,
+    \setmainfont[
+      Extension = .otf,
+      UprightFont = *-Regular,
+      BoldFont = *-Bold,
+      ItalicFont = *-Italic,
+      BoldItalicFont = *-BoldItalic
+    ]{XITS}
+    \setsansfont[
+      Extension = .otf,
+      UprightFont = *-regular,
+      BoldFont = *-bold,
+      ItalicFont = *-italic,
+      BoldItalicFont = *-bolditalic,
       Scale = 0.95
-		]{texgyreheros}
-	\else
-		% `defaultsups' prevents newtxtext from manipulating footnote marks.
-		\RequirePackage{textcomp, mathptmx, latexsym}
-		\RequirePackage[scaled = 0.95]{helvet}
-	\fi
+    ]{texgyreheros}
+  \else
+    % `defaultsups' prevents newtxtext from manipulating footnote marks.
+    \RequirePackage{textcomp, mathptmx, latexsym}
+    \RequirePackage[scaled = 0.95]{helvet}
+  \fi
 \else
-	% Provides `\Box' for originauth.tex if unicode-math is absent.
-	\RequirePackage{latexsym}
+  % Provides `\Box' for originauth.tex if unicode-math is absent.
+  \RequirePackage{latexsym}
 \fi
 
 \ifthss@opt@pkufoot
-    % Recounter for each page.
-    \RequirePackage{chngcntr}
-    \counterwithout{footnote}{chapter}
-    \counterwithin{footnote}{page}
-	% Handle the `Unparsed material' issue with latex/dvipdfmx compilation.
-	\unless\ifxetex\unless\ifpdf
-		\newcommand*{\pgfsysdriver}{pgfsys-dvipdfm.def}
-	\fi\fi
-	% Circled text, cf. <https://tex.stackexchange.com/questions/7032/>.
-	\RequirePackage{tikz}
-	\newcommand*{\thss@int@circled}[1]{%
-		\scalebox{0.8}{\tikz[baseline = {([yshift = -0.1\ccwd] char.base)}]{
-			\node[
-				shape = circle, draw = black, minimum size = 1.25\ccwd, inner sep = 0pt
-			] (char) {#1};
-		}}%
-	}
-	% Use circled numbers as footnote symbols. Does not affect title page, but
-	% footnote is rarely used in dissertation covers ;)
-	\renewcommand*{\thefootnote}{\protect\thss@int@circled{\arabic{footnote}}}
-	\renewcommand*{\thempfootnote}{\protect\thss@int@circled{\arabic{mpfootnote}}}
-	% Provides utility to modify footnote spacing.
-	\RequirePackage{scrextend}
-	% Set up footnote spacing: whole paragraph indent 1.5 ccwd, 0.5 ccwd after mark.
-	\deffootnote{1.5\ccwd}{0pt}{\thefootnotemark\hspace{0.5\ccwd}}
+  % Recounter for each page.
+  \RequirePackage{chngcntr}
+  \counterwithout{footnote}{chapter}
+  \counterwithin{footnote}{page}
+  % Handle the `Unparsed material' issue with latex/dvipdfmx compilation.
+  \unless\ifxetex\unless\ifpdf
+      \newcommand*{\pgfsysdriver}{pgfsys-dvipdfm.def}
+    \fi\fi
+  % Circled text, cf. <https://tex.stackexchange.com/questions/7032/>.
+  \RequirePackage{tikz}
+  \newcommand*{\thss@int@circled}[1]{%
+    \scalebox{0.8}{
+      \tikz[baseline = {([yshift = -0.1\ccwd] char.base)}]
+      {
+        \node[
+          shape = circle, draw = black, minimum size = 1.25\ccwd, inner sep = 0pt
+        ] (char) {#1};
+      }
+    }%
+  }
+  % Use circled numbers as footnote symbols. Does not affect title page, but
+  % footnote is rarely used in dissertation covers ;)
+  \renewcommand*{\thefootnote}{\protect\thss@int@circled{\arabic{footnote}}}
+  \renewcommand*{\thempfootnote}{\protect\thss@int@circled{\arabic{mpfootnote}}}
+  % Provides utility to modify footnote spacing.
+  \RequirePackage{scrextend}
+  % Set up footnote spacing: whole paragraph indent 1.5 ccwd, 0.5 ccwd after mark.
+  \deffootnote{1.5\ccwd}{0pt}{\thefootnotemark\hspace{0.5\ccwd}}
 \fi
 
 \ifthss@opt@pkuspace
-	% lineskip / baselineskip = 20 bp / (12 bp * (6 / 5)).
-	\linespread{1.39}\selectfont
-	% Provides utilities for setting TOC format; `titles' applied to avoid
-	% interfering with LaTeX's own title mechanism.
-	\RequirePackage[titles]{tocloft}
-	\setlength{\cftbeforechapskip}{6bp plus 1bp}
-	\setlength{\cftsecindent}{\ccwd}
-	\setlength{\cftsubsecindent}{2\ccwd}
-	\setlength{\cftsubsubsecindent}{4\ccwd}
-	% `caption' modifies font size and separator of captions.  `subcaption'
-	% provides functions similar to `subfigure'/`subfig' but does not clash with
-	% `tocloft'; it clashes with `subfigure'/`subfig', but the error message will
-	% say they cannot be used simultaneously.
-	\RequirePackage{caption}
-	\ifthss@opt@ugly
-		\DeclareCaptionFont{capfsize}{\fontsize{11bp}{13.2bp}}
-	\else
-		\DeclareCaptionFont{capfsize}{\zihao{5}}
-	\fi
-	\DeclareCaptionLabelSeparator{quad}{\quad}
-	\captionsetup{font = capfsize, labelsep = quad}
-	\captionsetup[sub]{font = capfsize}
+  % lineskip / baselineskip = 20 bp / (12 bp * (6 / 5)).
+  \linespread{1.39}\selectfont
+  % Provides utilities for setting TOC format; `titles' applied to avoid
+  % interfering with LaTeX's own title mechanism.
+  \RequirePackage[titles]{tocloft}
+  \setlength{\cftbeforechapskip}{6bp plus 1bp}
+  \setlength{\cftsecindent}{\ccwd}
+  \setlength{\cftsubsecindent}{2\ccwd}
+  \setlength{\cftsubsubsecindent}{4\ccwd}
+  % `caption' modifies font size and separator of captions.  `subcaption'
+  % provides functions similar to `subfigure'/`subfig' but does not clash with
+  % `tocloft'; it clashes with `subfigure'/`subfig', but the error message will
+  % say they cannot be used simultaneously.
+  \RequirePackage{caption}
+  \ifthss@opt@ugly
+    \DeclareCaptionFont{capfsize}{\fontsize{11bp}{13.2bp}}
+  \else
+    \DeclareCaptionFont{capfsize}{\zihao{5}}
+  \fi
+  \DeclareCaptionLabelSeparator{quad}{\quad}
+  \captionsetup{font = capfsize, labelsep = quad}
+  \captionsetup[sub]{font = capfsize}
 \fi
 
 \ifthss@opt@spacing
-	% Make spacing nicer in some situations (eg. footnotes and verbatims).
-	\RequirePackage{setspace}
-	% Remove superfluous spacing between footnotes.
-	\setlength{\footnotesep}{0pt}
-	% Lists often appear to be too sparse when items are just one or two lines
-	% long. Here we cancel the extra vertical spacing between list items.
-	% The list margin is adjusted due to Chinese typesetting traditions.
-	\RequirePackage{enumitem}
-	\setlist{nolistsep, leftmargin = 1.5\parindent}
+  % Make spacing nicer in some situations (eg. footnotes and verbatims).
+  \RequirePackage{setspace}
+  % Remove superfluous spacing between footnotes.
+  \setlength{\footnotesep}{0pt}
+  % Lists often appear to be too sparse when items are just one or two lines
+  % long. Here we cancel the extra vertical spacing between list items.
+  % The list margin is adjusted due to Chinese typesetting traditions.
+  \RequirePackage{enumitem}
+  \setlist{nolistsep, leftmargin = 1.5\parindent}
 \fi
 
 \ifthss@opt@spechap
-	% This command is used to start a chapter without numbering, and correctly set
-	% up the headers and footers in the chapter.
-	\newcommand{\specialchap}[1]{%
-		\chapter*{#1}\addcontentsline{toc}{chapter}{#1}
-		\markboth{#1}{}\phantomsection%
-	}
+  % This command is used to start a chapter without numbering, and correctly set
+  % up the headers and footers in the chapter.
+  \newcommand{\specialchap}[1]{%
+    \chapter*{#1}\addcontentsline{toc}{chapter}{#1}
+    \markboth{#1}{}\phantomsection%
+  }
 \fi
 
 \AtBeginDocument{
-	% Set up spacing for displayed formulae.
-	\setlength{\abovedisplayskip}{\belowdisplayshortskip}
-	\setlength{\belowdisplayskip}{\abovedisplayskip}
-    \hypersetup{
-        linktoc            = all,
-        bookmarksdepth     = 2,
-        bookmarksnumbered  = true,
-        bookmarksopen      = true,
-        bookmarksopenlevel = 1,
-        bookmarksdepth     = 3,
-        unicode            = true,
-        psdextra           = true,
-        breaklinks         = true,
-        plainpages         = false,
-        pdfdisplaydoctitle = true,
-        hidelinks,
-    }%
+  % Set up spacing for displayed formulae.
+  \setlength{\abovedisplayskip}{\belowdisplayshortskip}
+  \setlength{\belowdisplayskip}{\abovedisplayskip}
+  \hypersetup{
+    linktoc            = all,
+    bookmarksdepth     = 2,
+    bookmarksnumbered  = true,
+    bookmarksopen      = true,
+    bookmarksopenlevel = 1,
+    bookmarksdepth     = 3,
+    unicode            = true,
+    psdextra           = true,
+    breaklinks         = true,
+    plainpages         = false,
+    pdfdisplaydoctitle = true,
+    hidelinks,
+  }%
 
-	\ifthss@opt@pdftoc
-		% Add PDF bookmark for table of contents.
-		\let\thss@tmp@tableofcontents\tableofcontents
-		\renewcommand{\tableofcontents}{%
-			\thss@int@pdfmark{\contentsname}{contents}
-			\thss@tmp@tableofcontents%
-		}
-	\fi
+  \ifthss@opt@pdftoc
+    % Add PDF bookmark for table of contents.
+    \let\thss@tmp@tableofcontents\tableofcontents
+    \renewcommand{\tableofcontents}{%
+      \thss@int@pdfmark{\contentsname}{contents}
+      \thss@tmp@tableofcontents%
+    }
+  \fi
 
-	\ifthss@opt@pdfprop
-		% Automatically generate properties for generated PDF.
-		% Use English properties to avoid problems with character encodings.
-		\newcommand*{\setpdfproperties}{%
-			\hypersetup{
-				pdfauthor = {\@eauthor}, pdftitle = {\@etitle},
-				pdfsubject = {\euniversity\ \ethesisname}, pdfkeywords = {\@ekeywords}
-			}%
-		}
-		% Set up the properties when generating the title page because the document
-		% information should have been all defined before this.
-		\let\thss@tmp@maketitle\maketitle
-		% NOTE: `\hypersetup' must appear before `\maketitle', otherwise it might
-		% not act as expected.
-		\renewcommand{\maketitle}{\setpdfproperties\thss@tmp@maketitle}
-	\fi
+  \ifthss@opt@pdfprop
+    % Automatically generate properties for generated PDF.
+    % Use English properties to avoid problems with character encodings.
+    \newcommand*{\setpdfproperties}{%
+      \hypersetup{
+        pdfauthor = {\@eauthor}, pdftitle = {\@etitle},
+        pdfsubject = {\euniversity\ \ethesisname}, pdfkeywords = {\@ekeywords}
+      }%
+    }
+    % Set up the properties when generating the title page because the document
+    % information should have been all defined before this.
+    \let\thss@tmp@maketitle\maketitle
+    % NOTE: `\hypersetup' must appear before `\maketitle', otherwise it might
+    % not act as expected.
+    \renewcommand{\maketitle}{\setpdfproperties\thss@tmp@maketitle}
+  \fi
 }
 
 % eg. `\thss@int@infoitema{ctitle}' will expand to:
 %   \def\ctitle#1{\def\@ctitle{#1}}
 %   \define@key{thss@info}{ctitle}{\ctitle{#1}}
 \def\thss@int@infoitema#1{
-	\@namedef{#1}##1{\@namedef{@#1}{##1}}
-	\define@key{thss@info}{#1}{\@nameuse{#1}{##1}}
+  \@namedef{#1}##1{\@namedef{@#1}{##1}}
+  \define@key{thss@info}{#1}{\@nameuse{#1}{##1}}
 }
 % eg. `\thss@int@infoitemb{cuniversity}' will expand to:
 %   \define@key{thss@info}{cuniversity}{\def\cuniversity{#1}}
 \def\thss@int@infoitemb#1{
-	\define@key{thss@info}{#1}{\@namedef{#1}{##1}}
+  \define@key{thss@info}{#1}{\@namedef{#1}{##1}}
 }
 % Set up document information entries.
 \thss@int@infoitema{ctitle}
@@ -448,9 +450,9 @@
 % Set up page layout.
 \geometry{a4paper, hmargin = 2.6cm, headheight = 0.5cm, headsep = 0.6cm}
 \ifthss@opt@ugly
-	\geometry{top = 3.1cm, bottom = 3.0cm, footskip = 0.8cm}
+  \geometry{top = 3.1cm, bottom = 3.0cm, footskip = 0.8cm}
 \else
-	\geometry{top = 3.0cm, bottom = 3.1cm, footskip = 1.1cm}
+  \geometry{top = 3.0cm, bottom = 3.1cm, footskip = 1.1cm}
 \fi
 
 % Set up chapter/section/... captions.
@@ -461,57 +463,57 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
 \ctexset{
-	chapter = {beforeskip = {0bp}, afterskip = {18bp plus 0.2ex}},
-	section =
-		{beforeskip = {20bp plus 1ex minus 0.2ex}, afterskip = {5bp plus 0.2ex}},
-	subsection =
-		{beforeskip = {12bp plus 1ex minus 0.2ex}, afterskip = {5bp plus 0.2ex}},
-	subsubsection =
-		{beforeskip = {12bp plus 1ex minus 0.2ex}, afterskip = {5bp plus 0.2ex}}
+  chapter = {beforeskip = {0bp}, afterskip = {18bp plus 0.2ex}},
+  section =
+   {beforeskip = {20bp plus 1ex minus 0.2ex}, afterskip = {5bp plus 0.2ex}},
+  subsection =
+    {beforeskip = {12bp plus 1ex minus 0.2ex}, afterskip = {5bp plus 0.2ex}},
+  subsubsection =
+    {beforeskip = {12bp plus 1ex minus 0.2ex}, afterskip = {5bp plus 0.2ex}}
 }
 \ctexset{
-	chapter = {nameformat = {}, titleformat = {}},
-	subsubsection = {format = {\zihao{-4}\heiti}}
+  chapter = {nameformat = {}, titleformat = {}},
+  subsubsection = {format = {\zihao{-4}\heiti}}
 }
 \ifthss@opt@ugly
-	\ctexset{
-		chapter = {format = {\zihao{3}\heiti\centering}},
-		section = {format = {\zihao{4}\heiti}},
-		subsection = {format = {\fontsize{13bp}{15.6bp}\selectfont\heiti}}
-	}
+  \ctexset{
+    chapter = {format = {\zihao{3}\heiti\centering}},
+    section = {format = {\zihao{4}\heiti}},
+    subsection = {format = {\fontsize{13bp}{15.6bp}\selectfont\heiti}}
+  }
 \else
-	\ctexset{
-		chapter = {format = {\zihao{-2}\heiti\centering}},
-		section = {format = {\zihao{-3}\heiti}},
-		subsection = {format = {\zihao{4}\heiti}}
-	}
+  \ctexset{
+    chapter = {format = {\zihao{-2}\heiti\centering}},
+    section = {format = {\zihao{-3}\heiti}},
+    subsection = {format = {\zihao{4}\heiti}}
+  }
 \fi
 
 % `\MakeUppercase' works problematically.
 % eg. it converts `\cite{ctex}' into `\cite{CTEX}'.
 % This option can disable `\MakeUppercase' in left/right heading marks.
 \ifthss@opt@uppermark
-	\def\thss@int@setcase#1{#1}
+  \def\thss@int@setcase#1{#1}
 \else
-	% Code copied from fancyhdr's `\nouppercase', with the redefinition of
-	% `\uppercase' dropped to avoid disrupting CJKutf8.
-	% cf. <https://code.google.com/p/ctex-kit/issues/detail?id=147>.
-	\def\thss@int@setcase#1{%
-		\let\MakeUppercase\relax%
-		\expandafter\let\csname MakeUppercase \endcsname\relax%
-		#1%
-	}
+  % Code copied from fancyhdr's `\nouppercase', with the redefinition of
+  % `\uppercase' dropped to avoid disrupting CJKutf8.
+  % cf. <https://code.google.com/p/ctex-kit/issues/detail?id=147>.
+  \def\thss@int@setcase#1{%
+    \let\MakeUppercase\relax%
+    \expandafter\let\csname MakeUppercase \endcsname\relax%
+    #1%
+  }
 \fi
 % The actual page style setup.
 \fancypagestyle{plain}{
-	\fancyhf{}\renewcommand*{\headrulewidth}{0.75bp}
-	\fancyfoot[C]{\zihao{5}\normalfont{\thepage}}
-	\if@twoside
-		\fancyhead[CE]{\zihao{5}\normalfont{\ifthss@language@chinese{\cuniversity\cthesisname}\else{\euniversity\ \ethesisname}\fi}}
-		\fancyhead[CO]{\zihao{5}\normalfont\thss@int@setcase{\leftmark}}
-	\else
-		\fancyhead[C]{\zihao{5}\normalfont\thss@int@setcase{\leftmark}}
-	\fi
+  \fancyhf{}\renewcommand*{\headrulewidth}{0.75bp}
+  \fancyfoot[C]{\zihao{5}\normalfont{\thepage}}
+  \if@twoside
+    \fancyhead[CE]{\zihao{5}\normalfont{\ifthss@language@chinese{\cuniversity\cthesisname}\else{\euniversity\ \ethesisname}\fi}}
+    \fancyhead[CO]{\zihao{5}\normalfont\thss@int@setcase{\leftmark}}
+  \else
+    \fancyhead[C]{\zihao{5}\normalfont\thss@int@setcase{\leftmark}}
+  \fi
 }
 \pagestyle{plain}
 
@@ -519,117 +521,117 @@
 % Result of simple `\chapter{...} \pdfbookmark{...}' does not look nice,
 % because the bookmark will point to somewhere below the chapter mark.
 \def\thss@int@pdfmark#1#2{%
-	\if@openright\cleardoublepage\else\clearpage\fi
-	\pdfbookmark[0]{#1}{#2}%
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \pdfbookmark[0]{#1}{#2}%
 }
 
 % Usage: \thss@int@fillinblank{(number of lines)}{(line width)}{(contents)}
 \def\thss@int@fillinblank#1#2#3{%
-	\makebox[0pt][l]{\parbox[t]{#2}{\centering{#3}}}\mbox{}%
-	\parbox[t]{#2}{%
-		\newcount\thss@tmp@linecount
-		\thss@tmp@linecount=#1
-		\loop\ifnum\thss@tmp@linecount>0
-			% Fill specified space with underline on the bottom line. `\underline'
-			% draws line on the baseline (not the bottom line), and this is why
-			% `\uline' is used here instead.
-			\ifnum\thss@tmp@linecount=1
-				\uline{\makebox[#2]{}}
-			\else
-				\uline{\makebox[#2]{}}\\
-			\fi
-		\advance\thss@tmp@linecount by -1\relax
-		\repeat%
-	}%
+  \makebox[0pt][l]{\parbox[t]{#2}{\centering{#3}}}\mbox{}%
+  \parbox[t]{#2}{%
+    \newcount\thss@tmp@linecount
+    \thss@tmp@linecount=#1
+    \loop\ifnum\thss@tmp@linecount>0
+    % Fill specified space with underline on the bottom line. `\underline'
+    % draws line on the baseline (not the bottom line), and this is why
+    % `\uline' is used here instead.
+    \ifnum\thss@tmp@linecount=1
+      \uline{\makebox[#2]{}}
+    \else
+      \uline{\makebox[#2]{}}\\
+    \fi
+    \advance\thss@tmp@linecount by -1\relax
+    \repeat%
+  }%
 }
 
 % Set up format of the title page (cover).
 \newcommand{\maketitle@normal}{%
-	\thss@int@pdfmark{\titlepagename}{titlepage}
-	% Make the title page centered.
-	\begin{titlepage}\centering
-		% Emblem and inscription of the university, and type of thesis.
-		{%
-			\ifthss@opt@ugly%
-				\zihao{-0}\includegraphics[height = 1.9em]{pkulogo}\hspace{0.3em}%
-				\raisebox{0.32em}{\includegraphics[height = 1.3em]{pkuword}}\\[0.5em]
-			\else%
-				\zihao{1}\includegraphics[height = 2.4em]{pkulogo}\hspace{0.4em}%
-				\raisebox{0.4em}{\includegraphics[height = 1.6em]{pkuword}}\\[0.8em]
-			\fi%
-			{\heiti\ifthss@language@chinese{\ifx\thesiscover\empty{\cthesisname}\else{\thesiscover}\fi}\else{\ethesisname}\fi}%
-		}
-		\vfill
+  \thss@int@pdfmark{\titlepagename}{titlepage}
+  % Make the title page centered.
+  \begin{titlepage}\centering
+    % Emblem and inscription of the university, and type of thesis.
+    {%
+      \ifthss@opt@ugly%
+        \zihao{-0}\includegraphics[height = 1.9em]{pkulogo}\hspace{0.3em}%
+        \raisebox{0.32em}{\includegraphics[height = 1.3em]{pkuword}}\\[0.5em]
+      \else%
+        \zihao{1}\includegraphics[height = 2.4em]{pkulogo}\hspace{0.4em}%
+        \raisebox{0.4em}{\includegraphics[height = 1.6em]{pkuword}}\\[0.8em]
+      \fi%
+      {\heiti\ifthss@language@chinese{\ifx\thesiscover\empty{\cthesisname}\else{\thesiscover}\fi}\else{\ethesisname}\fi}%
+    }
+    \vfill
 
-		% Title of the thesis.
-		{%
-			\zihao{2}\linespread{1.6}\selectfont{\ifthss@language@chinese{\label@ctitle}\else{\label@etitle}\fi}%
-			\thss@int@fillinblank{2}{0.64\textwidth}{\heiti{\zihao{1}\ifthss@language@chinese{\@ctitle}\else{\@etitle}\fi}}%
-		}
-		\vfill
-		% Information about the author.
-		{%
-			% Slightly adjust the line skip when using new font size.
-			\zihao{3}\linespread{1.75}\selectfont
-			\def\thss@tmp@len{0.56\textwidth}
+    % Title of the thesis.
+    {%
+      \zihao{2}\linespread{1.6}\selectfont{\ifthss@language@chinese{\label@ctitle}\else{\label@etitle}\fi}%
+      \thss@int@fillinblank{2}{0.64\textwidth}{\heiti{\zihao{1}\ifthss@language@chinese{\@ctitle}\else{\@etitle}\fi}}%
+    }
+    \vfill
+    % Information about the author.
+    {%
+      % Slightly adjust the line skip when using new font size.
+      \zihao{3}\linespread{1.75}\selectfont
+      \def\thss@tmp@len{0.56\textwidth}
       \ifthss@language@chinese
         \begin{tabular}{l@{\extracolsep{0.2em}}c}
-          {\heiti{\zihao{-3}\label@cauthor}}		&
-          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cauthor}		\\
-          {\heiti{\zihao{-3}\label@studentid}}	&
-          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}	\\
-          {\heiti{\zihao{-3}\label@school}}		&
-          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}		\\
-          {\heiti{\zihao{-3}\label@cmajor}}		&
-          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cmajor}		\\
-          {\heiti{\zihao{-3}\label@direction}}	&
-          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
-          {\heiti{\zihao{-3}\label@cmentor}}		&
-          \thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@cmentor}		\\
+          {\heiti{\zihao{-3}\label@cauthor}}   &
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cauthor}            \\
+          {\heiti{\zihao{-3}\label@studentid}} &
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}          \\
+          {\heiti{\zihao{-3}\label@school}}    &
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}             \\
+          {\heiti{\zihao{-3}\label@cmajor}}    &
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cmajor}             \\
+          {\heiti{\zihao{-3}\label@direction}} &
+          \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}          \\
+          {\heiti{\zihao{-3}\label@cmentor}}   &
+          \thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@cmentor} \\
         \end{tabular}%
       \else
         \ifthss@language@english
           \begin{tabular}{c@{\extracolsep{0.2em}}c}
-            {\heiti{\zihao{-3}\label@eauthor}}		&
-            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@eauthor}		\\
-            {\heiti{\zihao{-3}\label@estudentid}}	&
-            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}	\\
-            {\heiti{\zihao{-3}\label@eschool}}		&
-            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}		\\
-            {\heiti{\zihao{-3}\label@emajor}}		&
-            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@emajor}		\\
-            {\heiti{\zihao{-3}\label@edirection}}	&
-            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
-            {\heiti{\zihao{-3}\label@ementor}}		&
-            \thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@ementor}		\\
+            {\heiti{\zihao{-3}\label@eauthor}}    &
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@eauthor}            \\
+            {\heiti{\zihao{-3}\label@estudentid}} &
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@studentid}          \\
+            {\heiti{\zihao{-3}\label@eschool}}    &
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@school}             \\
+            {\heiti{\zihao{-3}\label@emajor}}     &
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@emajor}             \\
+            {\heiti{\zihao{-3}\label@edirection}} &
+            \thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}          \\
+            {\heiti{\zihao{-3}\label@ementor}}    &
+            \thss@int@fillinblank{\mentorlines}{\thss@tmp@len}{\fangsong\@ementor} \\
           \end{tabular}%
         \fi
       \fi
-		}
-		\vfill
-		% Date.
-		{\ifthss@opt@ugly\zihao{3}\else\zihao{-2}\fi\@date}
-	\par\end{titlepage}%
+    }
+    \vfill
+    % Date.
+    {\ifthss@opt@ugly\zihao{3}\else\zihao{-2}\fi\@date}
+    \par\end{titlepage}%
 }
 
 % Typeset the title page for double-blind review.
 \newcommand{\makeblind}{%
-	\thss@int@pdfmark{\titlepagename}{titlepage}
-	\begin{titlepage}\renewcommand{\thssnl}{\newline}
-		\centering\zihao{3}\selectfont\fangsong\vspace*{0.5cm}
-		{\zihao{-0}\heiti\cuniversity\cthesisname}\\[0.36\baselineskip]
-		{\zihao{-2}\fangsong\label@blindcover}%
-		\par\vspace{4\baselineskip}
-		\renewcommand{\arraystretch}{1.25}
-		\begin{tabular}{lp{0.75\textwidth}}
-			\label@blindctitle	&	{\@ctitle}	\\
-			\label@blindetitle	&	{\@etitle}	\\\\
-			\label@blinddiscipline	&	{\@discipline}	\\
-			\label@blindmajor	&	{\@cmajor}	\\
-			\label@blindid	&	{\@blindid}	\\
-		\end{tabular}\par\vfill
-		{\@date}\par\vspace*{0.5cm}
-	\end{titlepage}%
+  \thss@int@pdfmark{\titlepagename}{titlepage}
+  \begin{titlepage}\renewcommand{\thssnl}{\newline}
+    \centering\zihao{3}\selectfont\fangsong\vspace*{0.5cm}
+    {\zihao{-0}\heiti\cuniversity\cthesisname}\\[0.36\baselineskip]
+    {\zihao{-2}\fangsong\label@blindcover}%
+    \par\vspace{4\baselineskip}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{lp{0.75\textwidth}}
+      \label@blindctitle     & {\@ctitle}     \\
+      \label@blindetitle     & {\@etitle}     \\\\
+      \label@blinddiscipline & {\@discipline} \\
+      \label@blindmajor      & {\@cmajor}     \\
+      \label@blindid         & {\@blindid}    \\
+    \end{tabular}\par\vfill
+    {\@date}\par\vspace*{0.5cm}
+  \end{titlepage}%
 }
 
 % Unified Set up format of the cover two mode.
@@ -641,63 +643,63 @@
 
 % Typeset the Chinese abstract.
 \newenvironment{cabstract}{%
-	\thss@int@pdfmark{\cabstractname}{cabstract}
-	\chapter*{\cabstractname}\markboth{\cabstractname}{}%
+  \thss@int@pdfmark{\cabstractname}{cabstract}
+  \chapter*{\cabstractname}\markboth{\cabstractname}{}%
 }{% Keywords at the bottom of the page.
-	\vfill\noindent\label@ckeywords{\@ckeywords}%
+  \vfill\noindent\label@ckeywords{\@ckeywords}%
 }
 
 % Typeset the English abstract & double-blind review.
 \newenvironment{eabstract}{%
-	\thss@int@pdfmark{\eabstractname}{eabstract}
-	\chapter*{\sffamily\@etitle}\markboth{\eabstractname}{}
+  \thss@int@pdfmark{\eabstractname}{eabstract}
+  \chapter*{\sffamily\@etitle}\markboth{\eabstractname}{}
   \ifthss@opt@blind
     \begin{center}\textbf{\sffamily\eabstractname}\end{center}\par%
   \else
     \begin{center}
-	  	{\@eauthor} ({\@emajor})\\
-	  	{\label@ementor}{\@ementor}\\[2em]
-		  \textbf{\sffamily\eabstractname}
-	  \end{center}
+      {\@eauthor} ({\@emajor})\\
+      {\label@ementor}{\@ementor}\\[2em]
+      \textbf{\sffamily\eabstractname}
+    \end{center}
   \fi\par%
 }{% Keywords at the bottom of the page.
-	\vfill\noindent\label@ekeywords{\@ekeywords}%
+  \vfill\noindent\label@ekeywords{\@ekeywords}%
 }
 
 % Typeset the tableofcontents.
 \renewcommand*{\tableofcontents}{%
-    \chapter*{\contentsname}%
-    \@mkboth{\MakeUppercase\contentsname}%
-            {\MakeUppercase\contentsname}%
-    \@starttoc{toc}%
+  \chapter*{\contentsname}%
+  \@mkboth{\MakeUppercase\contentsname}%
+  {\MakeUppercase\contentsname}%
+  \@starttoc{toc}%
 }
 \newcommand\thss@leaders{\titlerule*[4.4bp]{.}}
 \newcommand\thss@set@toc@format{%
   \contentsmargin{\z@}%
   \titlecontents{chapter}
-    [\z@]{\addvspace{6bp}\zihao{-4}\heiti}
-    {\contentspush{\thecontentslabel\quad}}{}
-    {\thss@leaders\thecontentspage}%
+  [\z@]{\addvspace{6bp}\zihao{-4}\heiti}
+  {\contentspush{\thecontentslabel\quad}}{}
+  {\thss@leaders\thecontentspage}%
   \titlecontents{section}
-    [1em]{}
-    {\contentspush{\thecontentslabel\quad}}{}
-    {\thss@leaders\thecontentspage}%
+  [1em]{}
+  {\contentspush{\thecontentslabel\quad}}{}
+  {\thss@leaders\thecontentspage}%
   \titlecontents{subsection}
-    [2em]{}
-    {\contentspush{\thecontentslabel\quad}}{}
-    {\thss@leaders\thecontentspage}%
+  [2em]{}
+  {\contentspush{\thecontentslabel\quad}}{}
+  {\thss@leaders\thecontentspage}%
 }
 \thss@set@toc@format
 
 % Typeset the table and figure contents.
 \titlecontents{table}
-  [\z@]{}
-  {\tablename~\thecontentslabel\quad}{}
-  {\thss@leaders\thecontentspage}
+[\z@]{}
+{\tablename~\thecontentslabel\quad}{}
+{\thss@leaders\thecontentspage}
 \titlecontents{figure}
-  [\z@]{}
-  {\figurename~\thecontentslabel\quad}{}
-  {\thss@leaders\thecontentspage}
+[\z@]{}
+{\figurename~\thecontentslabel\quad}{}
+{\thss@leaders\thecontentspage}
 
 % Subfigure reference format.
 \renewcommand\thesubfigure{(\alph{subfigure})}
@@ -874,8 +876,7 @@
   \fi
 }
 \ifthss@opt@pkufoot
-    \thss@set@cjk@font
+  \thss@set@cjk@font
 \fi
 
 \endinput
-% vim:ft=tex:ts=2:sw=2

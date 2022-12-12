@@ -25,8 +25,8 @@
 %   pkuword.eps
 
 \ProvidesFile{pkuthss-gbk.def}
-	[2022/10/30 v1.9.3 Labels and captions in GBK encoding
-		for the pkuthss document class]
+  [2022/10/30 v1.9.3 Labels and captions in GBK encoding
+    for the pkuthss document class]
 
 \def\label@ctitle{ÌâÄ¿£º}
 \def\label@etitle{Title: }
@@ -63,4 +63,3 @@
 \def\mentorlines{1}
 
 \endinput
-% vim:ft=tex:ts=2:sw=2

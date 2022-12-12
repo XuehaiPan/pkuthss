@@ -15,5 +15,3 @@ bump:
 
 dist clean distclean:
 	utils/dist TITLE=$(TITLE) EXAMPLE=$(EXAMPLE) VERSION=$(VERSION) $@
-
-# vim:ts=4:sw=4

@@ -5,9 +5,9 @@
 本人才疏学浅，如有纰漏欢迎交流指正。
 
 \def\XeLaTeX{
-\leavevmode
-\setbox0=\hbox{X\lower.5ex\hbox{\kern-.15em\reflectbox{E}}\kern-.1667em\LaTeX}%
-\dp0=0pt\ht0=0pt\box0
+  \leavevmode
+  \setbox0=\hbox{X\lower.5ex\hbox{\kern-.15em\reflectbox{E}}\kern-.1667em\LaTeX}%
+  \dp0=0pt\ht0=0pt\box0
 }
 
 \section{Overleaf适配存在的问题}
@@ -34,68 +34,68 @@ Overleaf适配过程中遇到的问题不是\TeX{} Live版本\footnote{Overleaf�
 
 原先\pkuthss{}在\verb|ctex-fontset-pkuthss.def|定义了使用的字体依赖，具体情况如下：
 \begin{itemize}
-    \item \verb|\songti|，中易宋体，作为默认中文字体使用，衬线字体，\verb|\textrm|；
-    \item \verb|\heiti|，中易黑体，无衬线字体，\verb|\bfseries|，\verb|\textbf|和\verb|\textsf|；
-    \item \verb|\fangsong|，中易仿宋，等宽字体，\verb|\texttt|；
-    \item \verb|\kaishu|，中易楷体，\verb|\textit|;
-    \item \verb|\lishu|， \verb|\youyuan|这两者在Linux下不存在，在windows、founder、macnew字库中才存在。原\pkuthss{}文档类中仅申明未使用。
+  \item \verb|\songti|，中易宋体，作为默认中文字体使用，衬线字体，\verb|\textrm|；
+  \item \verb|\heiti|，中易黑体，无衬线字体，\verb|\bfseries|，\verb|\textbf|和\verb|\textsf|；
+  \item \verb|\fangsong|，中易仿宋，等宽字体，\verb|\texttt|；
+  \item \verb|\kaishu|，中易楷体，\verb|\textit|;
+  \item \verb|\lishu|， \verb|\youyuan|这两者在Linux下不存在，在windows、founder、macnew字库中才存在。原\pkuthss{}文档类中仅申明未使用。
 \end{itemize}
 
 \begin{table}[htbp]
-\centering
-\begin{minipage}[t]{\linewidth} %
-\caption{\CTeX{} 宏集自动配置字体策略}
-\label{tab:ctex-font-select}
-\resizebox{\linewidth}{!}{
-\begin{tabular}{*{5}{c}}
-  \toprule
-             & macOS Old\footnotemark[1]
-             & macOS New\footnotemark[2]
-             & Windows\footnotemark[3]
-             & 其他\footnotemark[4] \\
-  \midrule
-  \XeLaTeX   & \makecell{\pkg{xeCJK}\\华文字库}
-             & \makecell{\pkg{xeCJK}\\华文字库 + 苹方}
-             & \makecell{\pkg{xeCJK}\\中易字库 + 微软雅黑}
-             & \makecell{\pkg{xeCJK}\\Fandol 字库\footnotemark[5]} \\
-  \cmidrule(lr){1-5}
-  Lua\LaTeX\footnotemark[6]
-             & \makecell{\pkg{LuaTeX-ja}\\华文字库}
-             & \makecell{\pkg{LuaTeX-ja}\\华文字库 + 苹方}
-             & \makecell{\pkg{LuaTeX-ja}\\中易字库 + 微软雅黑}
-             & \makecell{\pkg{LuaTeX-ja}\\Fandol 字库} \\
-  \cmidrule(lr){1-5}
-  pdf\LaTeX
-             & 不可用
-             & 不可用
-             & \makecell{\pkg{CJK} + \pkg{zhmetrics}\\中易字库 + 微软雅黑\footnotemark[7]}
-             & 不可用 \\
-  \cmidrule(lr){1-5}
-  \makecell{\LaTeX{} + \\ DVIPDFM$x$}
-             & 不可用
-             & \makecell{\pkg{CJK} + \pkg{zhmetrics}\\华文字库 + 苹方}
-             & \makecell{\pkg{CJK} + \pkg{zhmetrics}\\中易字库 + 微软雅黑\footnotemark[7]}
-             & \makecell{\pkg{CJK} + \pkg{zhmetrics}\\Fandol 字库} \\
-  \cmidrule(lr){1-5}
-  \makecell{up\LaTeX{} + \\DVIPDFM$x$}
-             & 不可用
-             & \makecell{\pkg{zhmetrics-uptex}\\华文字库 + 苹方}
-             & \makecell{\pkg{zhmetrics-uptex}\\中易字库 + 微软雅黑}
-             & \makecell{\pkg{zhmetrics-uptex}\\Fandol 字库} \\
-  \bottomrule
-\end{tabular}
-}
-\footnotetext[1]{Yosemite (10.10) 及以前的 macOS 系统。}
-\footnotetext[2]{El Capitan (10.11) 及以后的 macOS 系统。}
-\footnotetext[3]{仅支持 Windows Vista 及以后的 Windows 操作系统。}
-\footnotetext[4]{\CTeX{}将其他系统统一归为 Linux。}
-\footnotetext[5]{由马起园、苏杰、黄晨成等人开发的开源中文字体，
-     参见：\url{https://www.ctan.org/pkg/fandol}。}
-\footnotetext[6]{Lua\LaTeX{} 编译时使用 \pkg{LuaTeX-ja} 宏包。}
-\footnotetext[7]{微软雅黑字体并不总是有效，与选项 \pkg{zhmap} 的取值有关。}
-\\[6pt]
-\footnotesize 注：数据来源与\CTeX{}宏集手册v2.5.6。\\
-\end{minipage}
+  \centering
+  \begin{minipage}[t]{\linewidth} %
+    \caption{\CTeX{} 宏集自动配置字体策略}
+    \label{tab:ctex-font-select}
+    \resizebox{\linewidth}{!}{
+      \begin{tabular}{*{5}{c}}
+        \toprule
+                 & macOS Old\footnotemark[1]
+                 & macOS New\footnotemark[2]
+                 & Windows\footnotemark[3]
+                 & 其他\footnotemark[4]                    \\
+        \midrule
+        \XeLaTeX & \makecell{\pkg{xeCJK}                 \\华文字库}
+                 & \makecell{\pkg{xeCJK}                 \\华文字库 + 苹方}
+                 & \makecell{\pkg{xeCJK}                 \\中易字库 + 微软雅黑}
+                 & \makecell{\pkg{xeCJK}                 \\Fandol 字库\footnotemark[5]} \\
+        \cmidrule(lr){1-5}
+        Lua\LaTeX\footnotemark[6]
+                 & \makecell{\pkg{LuaTeX-ja}             \\华文字库}
+                 & \makecell{\pkg{LuaTeX-ja}             \\华文字库 + 苹方}
+                 & \makecell{\pkg{LuaTeX-ja}             \\中易字库 + 微软雅黑}
+                 & \makecell{\pkg{LuaTeX-ja}             \\Fandol 字库} \\
+        \cmidrule(lr){1-5}
+        pdf\LaTeX
+                 & 不可用
+                 & 不可用
+                 & \makecell{\pkg{CJK} + \pkg{zhmetrics} \\中易字库 + 微软雅黑\footnotemark[7]}
+                 & 不可用                                   \\
+        \cmidrule(lr){1-5}
+        \makecell{\LaTeX{} +                             \\ DVIPDFM$x$}
+                 & 不可用
+                 & \makecell{\pkg{CJK} + \pkg{zhmetrics} \\华文字库 + 苹方}
+                 & \makecell{\pkg{CJK} + \pkg{zhmetrics} \\中易字库 + 微软雅黑\footnotemark[7]}
+                 & \makecell{\pkg{CJK} + \pkg{zhmetrics} \\Fandol 字库} \\
+        \cmidrule(lr){1-5}
+        \makecell{up\LaTeX{} +                           \\DVIPDFM$x$}
+                 & 不可用
+                 & \makecell{\pkg{zhmetrics-uptex}       \\华文字库 + 苹方}
+                 & \makecell{\pkg{zhmetrics-uptex}       \\中易字库 + 微软雅黑}
+                 & \makecell{\pkg{zhmetrics-uptex}       \\Fandol 字库} \\
+        \bottomrule
+      \end{tabular}
+    }
+    \footnotetext[1]{Yosemite (10.10) 及以前的 macOS 系统。}
+    \footnotetext[2]{El Capitan (10.11) 及以后的 macOS 系统。}
+    \footnotetext[3]{仅支持 Windows Vista 及以后的 Windows 操作系统。}
+    \footnotetext[4]{\CTeX{}将其他系统统一归为 Linux。}
+    \footnotetext[5]{由马起园、苏杰、黄晨成等人开发的开源中文字体，
+      参见：\url{https://www.ctan.org/pkg/fandol}。}
+    \footnotetext[6]{Lua\LaTeX{} 编译时使用 \pkg{LuaTeX-ja} 宏包。}
+    \footnotetext[7]{微软雅黑字体并不总是有效，与选项 \pkg{zhmap} 的取值有关。}
+    \\[6pt]
+    \footnotesize 注：数据来源与\CTeX{}宏集手册v2.5.6。\\
+  \end{minipage}
 \end{table}
 
 \subsection{fontset 设定}
@@ -112,15 +112,15 @@ Overleaf适配过程中遇到的问题不是\TeX{} Live版本\footnote{Overleaf�
   \caption{\iofupkuthss{}预设的五种字体模式}
   \label{tab:ctex-fontset}
   \begin{minipage}[t]{0.55\linewidth} %
-  \begin{tabular}{ccccc}
-    \toprule
-    & \option{windows}\footnote{与windows@overleaf模式相同} & \option{mac}    & \option{ubuntu} & \option{fandol} \\
-    \midrule
-    宋体 & 中易宋体         & 华文宋体        & 思源宋体        & Fandol 宋体     \\
-    \heiti{黑体} & 中易黑体         & 华文黑体        & 思源黑体        & Fandol 黑体     \\
-    \fangsong{仿宋} & 中易仿宋         & 华文仿宋        & Fandol 仿宋     & Fandol 仿宋     \\
-    \bottomrule
-  \end{tabular}
+    \begin{tabular}{ccccc}
+      \toprule
+                    & \option{windows}\footnote{与windows@overleaf模式相同} & \option{mac} & \option{ubuntu} & \option{fandol} \\
+      \midrule
+      宋体            & 中易宋体                                             & 华文宋体         & 思源宋体            & Fandol 宋体       \\
+      \heiti{黑体}    & 中易黑体                                             & 华文黑体         & 思源黑体            & Fandol 黑体       \\
+      \fangsong{仿宋} & 中易仿宋                                             & 华文仿宋         & Fandol 仿宋       & Fandol 仿宋       \\
+      \bottomrule
+    \end{tabular}
   \end{minipage}
 \end{table}
 
